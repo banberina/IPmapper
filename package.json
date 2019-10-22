@@ -1,0 +1,23 @@
+{
+  "name": "web-engineering-project",
+  "version": "1.0.0",
+  "description": "-Everyone can use it",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/banberina/web-engineering-project.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/banberina/web-engineering-project/issues"
+  },
+  "homepage": "https://github.com/banberina/web-engineering-project#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
