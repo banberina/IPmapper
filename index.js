@@ -14,7 +14,7 @@ if (!process.env.HEROKU)
 const app = express();
 const port= process.env.PORT||4000;
 
-const db=mongojs(process.env.MONGODB_URL || config.MONGODB_URL);
+db=mongojs(process.env.MONGODB_URL || config.MONGODB_URL);
 
 
 app.use(express.static('public'));
