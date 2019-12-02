@@ -1,4 +1,4 @@
-module.exports = (router) => {
+module.exports = (router,db,mongojs) => {
 
     /* Visit-logging middleware */
     router.use((req, res, next, mongojs, db,config) => {
@@ -25,6 +25,12 @@ module.exports = (router) => {
     });
 });
 
+router.post('/asn',(req,res)=> { 
+    db.asn.insert(req.body,(error,docs)=>
+    {
+        res.json(docs);
+    });
+});
 
 router.get('/data/:id',(req,res,db,config)=>{
     let id=req.params.id;

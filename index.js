@@ -31,8 +31,12 @@ require('./api/routes/admin.js')(admin_router,db,mongojs,jwt,config);
 app.use('/admin',admin_router);
 
 let public_router = express.Router();
-require('./api/routes/public.js')(public_router);
+require('./api/routes/public.js')(public_router,db,mongojs);
 app.use('/public', public_router);
+
+let user_router = express.Router();
+require('./api/routes/user.js')(user_router,db,mongojs,jwt,config);
+app.use('/user', user_router);
 
 const { google } = require('googleapis');
 const oauth2Client = new google.auth.OAuth2(
@@ -62,10 +66,10 @@ app.get('/login', (req, res) => {
                   query: { email: data.email },
                   update: { $setOnInsert: { email: data.email, name: data.name, signup_time: new Date(), type: 'user' } },
                   new: true,
-                  upsert: true  
+                  upsert: true
               }, (error, doc) => {
                   if (error) {
-                      console.log(error);
+                      res.status(404).json({message:error.errmsg})
                   }
                   let jwtToken = jwt.sign({
                       ...data,
