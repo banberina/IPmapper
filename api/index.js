@@ -17,7 +17,7 @@ const port= process.env.PORT||4000;
 db=mongojs(process.env.MONGODB_URL || config.MONGODB_URL);
 
 
-app.use(express.static('public'));
+app.use(express.static('../frontend/build'));
 app.use(bodyParser.json());
 
 /* Global middleware */
@@ -27,15 +27,15 @@ app.use((req, res, next) => {
 });
 
 let admin_router=express.Router();
-require('./api/routes/admin.js')(admin_router,db,mongojs,jwt,config);
+require('./routes/admin.js')(admin_router,db,mongojs,jwt,config);
 app.use('/admin',admin_router);
 
 let public_router = express.Router();
-require('./api/routes/public.js')(public_router,db,mongojs);
+require('./routes/public.js')(public_router,db,mongojs);
 app.use('/public', public_router);
 
 let user_router = express.Router();
-require('./api/routes/user.js')(user_router,db,mongojs,jwt,config);
+require('./routes/user.js')(user_router,db,mongojs,jwt,config);
 app.use('/user', user_router);
 
 const { google } = require('googleapis');
