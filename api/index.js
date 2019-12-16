@@ -30,9 +30,6 @@ let admin_router=express.Router();
 require('./routes/admin.js')(admin_router,db,mongojs,jwt,config);
 app.use('/admin',admin_router);
 
-let public_router = express.Router();
-require('./routes/public.js')(public_router,db,mongojs);
-app.use('/public', public_router);
 
 let user_router = express.Router();
 require('./routes/user.js')(user_router,db,mongojs,jwt,config);
@@ -96,6 +93,45 @@ app.get('/login', (req, res) => {
       res.redirect(url);
     }
 });
+
+    /* Visit-logging middleware */
+    app.use((req, res, next) => {
+        console.log(`New visit from ${req.ip} at ${new Date()}` ); // log visits
+        next();
+    });
+
+    app.get('/a',(req,res)=>{
+        let limit = Number(req.query.limit)||10;
+        let skip = Number(req.query.skip)||0;
+        db.geo.find({}).skip(skip).limit(limit,(error,docs)=> {
+            if(error) {
+                throw error;
+            }
+            res.json(docs);
+        });
+    }); 
+
+  /* App version endpoint */
+  app.get('/version', ( res) => {
+    res.json({
+        app_name: 'IPmapper',
+        version: 'v1.0.0'
+    });
+});
+
+
+
+
+app.get('/data/:ip',(req,res,db)=>{
+    let id=req.params.id;
+    db.geo.aggregate([
+        {$match:{geo_id:mongojs.ObjectId(id)}},
+        {$project:{ip_addressfrom:'$geo.ipfrom',ip_addressto:"$geo.ipto"}}],
+        (error, docs) => {
+            if(error){throw error;}
+        res.json(docs);
+        });
+    }); 
 
 /* // Basic CRUD operations
 app.get('/users/:id', (req, res) => {
