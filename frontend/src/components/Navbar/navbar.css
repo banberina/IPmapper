@@ -1,0 +1,42 @@
+
+@import "https://fonts.googleapis.com/css?family=Lato:100,300,400,700,900";
+@import "https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css";
+@import url('https://fonts.googleapis.com/css?family=Alegreya+Sans+SC&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Orbitron&display=swap');
+
+
+nav {
+/* FF3.6-15 */
+background: -webkit-linear-gradient(top, black 0%, transparent 100%);
+/* Chrome10-25,Safari5.1-6 */
+background: linear-gradient(to bottom, black 0%, transparent 100%);
+/* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00000000', endColorstr='#a6000000',GradientType=0 );
+height: auto;
+
+}
+
+
+
+nav ul li:hover {
+  background: rgb(105, 45, 184);
+  cursor: pointer;
+}
+
+.Nav h1{
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  height: 40;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+      -ms-flex-align: center;
+          align-items: center;
+          margin:0;
+          padding:0;
+}
+
+
+
+

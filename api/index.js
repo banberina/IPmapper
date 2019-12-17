@@ -1,20 +1,19 @@
-const express = require ('express');
+const express = require('express');
 const mongojs = require('mongojs');
 const bodyParser = require('body-parser');
 const jwt = require('jsonwebtoken');
 
 let config;
-if (!process.env.HEROKU)
-{
-    config=require('./config');
+if (!process.env.HEROKU) {
+    config = require('./config');
 }
 
 
 //Mongo DB connection
 const app = express();
-const port= process.env.PORT||4000;
+const port = process.env.PORT || 4000;
 
-db=mongojs(process.env.MONGODB_URL || config.MONGODB_URL);
+db = mongojs(process.env.MONGODB_URL || config.MONGODB_URL);
 
 
 app.use(express.static('../frontend/build'));
@@ -26,13 +25,13 @@ app.use((req, res, next) => {
     next();
 });
 
-let admin_router=express.Router();
-require('./routes/admin.js')(admin_router,db,mongojs,jwt,config);
-app.use('/admin',admin_router);
+let admin_router = express.Router();
+require('./routes/admin.js')(admin_router, db, mongojs, jwt, config);
+app.use('/admin', admin_router);
 
 
 let user_router = express.Router();
-require('./routes/user.js')(user_router,db,mongojs,jwt,config);
+require('./routes/user.js')(user_router, db, mongojs, jwt, config);
 app.use('/user', user_router);
 
 const { google } = require('googleapis');
@@ -46,73 +45,73 @@ app.get('/login', (req, res) => {
     let code = req.query.code;
     /* If redirected from Google API */
     if (code) {
-      oauth2Client.getToken(code).then((result) => {
-          oauth2Client.setCredentials({access_token: result.tokens.access_token});
-          let oauth2 = google.oauth2({
-              auth: oauth2Client,
-              version: 'v2'
-          });
-          
-          oauth2.userinfo.get((err, response) => {
-              if (err) {
-                  throw err;
-              }
-              let data = response.data;
+        oauth2Client.getToken(code).then((result) => {
+            oauth2Client.setCredentials({ access_token: result.tokens.access_token });
+            let oauth2 = google.oauth2({
+                auth: oauth2Client,
+                version: 'v2'
+            });
 
-              db.users.findAndModify({ 
-                  query: { email: data.email },
-                  update: { $setOnInsert: { email: data.email, name: data.name, signup_time: new Date(), type: 'user' } },
-                  new: true,
-                  upsert: true
-              }, (error, doc) => {
-                  if (error) {
-                      res.status(404).json({message:error.errmsg})
-                  }
-                  let jwtToken = jwt.sign({
-                      ...data,
-                      exp: (Math.floor(Date.now() / 1000) + 3600), // token which lasts for an hour
-                      id: doc._id,
-                      type: doc.type
-                  }, process.env.JWT_SECRET || config.JWT_SECRET);
-                  /* Output the JWT */
-                  res.json({ 'jwt' : jwtToken });
-              });
-          });
-      });
-    /* If coming to the login URL for the first time */
+            oauth2.userinfo.get((err, response) => {
+                if (err) {
+                    throw err;
+                }
+                let data = response.data;
+
+                db.users.findAndModify({
+                    query: { email: data.email },
+                    update: { $setOnInsert: { email: data.email, name: data.name, signup_time: new Date(), type: 'user' } },
+                    new: true,
+                    upsert: true
+                }, (error, doc) => {
+                    if (error) {
+                        res.status(404).json({ message: error.errmsg })
+                    }
+                    let jwtToken = jwt.sign({
+                        ...data,
+                        exp: (Math.floor(Date.now() / 1000) + 3600), // token which lasts for an hour
+                        id: doc._id,
+                        type: doc.type
+                    }, process.env.JWT_SECRET || config.JWT_SECRET);
+                    /* Output the JWT */
+                    res.json({ 'jwt': jwtToken });
+                });
+            });
+        });
+        /* If coming to the login URL for the first time */
     } else {
-      const scopes = [
-          'https://www.googleapis.com/auth/userinfo.profile',
-          'https://www.googleapis.com/auth/userinfo.email'
-      ];
-      
-      const url = oauth2Client.generateAuthUrl({
-          access_type: 'online',
-          scope: scopes
-      });
-      res.redirect(url);
+        const scopes = [
+            'https://www.googleapis.com/auth/userinfo.profile',
+            'https://www.googleapis.com/auth/userinfo.email'
+        ];
+
+        const url = oauth2Client.generateAuthUrl({
+            access_type: 'online',
+            scope: scopes
+        });
+        res.redirect(url);
     }
 });
 
-    /* Visit-logging middleware */
-    app.use((req, res, next) => {
-        console.log(`New visit from ${req.ip} at ${new Date()}` ); // log visits
-        next();
+/* Visit-logging middleware */
+app.use((req, res, next) => {
+    console.log(`New visit from ${req.ip} at ${new Date()}`); // log visits
+    next();
+});
+
+app.get('/data', (req, res) => {
+    let limit = Number(req.query.limit) || 10;
+    let skip = Number(req.query.skip) || 0;
+    db.geo.find({}).skip(skip).limit(limit, (error, docs) => {
+        if (error) {
+            throw error;
+        }
+        res.json(docs);
     });
+});
 
-    app.get('/a',(req,res)=>{
-        let limit = Number(req.query.limit)||10;
-        let skip = Number(req.query.skip)||0;
-        db.geo.find({}).skip(skip).limit(limit,(error,docs)=> {
-            if(error) {
-                throw error;
-            }
-            res.json(docs);
-        });
-    }); 
-
-  /* App version endpoint */
-  app.get('/version', ( res) => {
+/* App version endpoint */
+app.get('/version', (res) => {
     res.json({
         app_name: 'IPmapper',
         version: 'v1.0.0'
@@ -122,16 +121,15 @@ app.get('/login', (req, res) => {
 
 
 
-app.get('/data/:ip',(req,res,db)=>{
-    let id=req.params.id;
-    db.geo.aggregate([
-        {$match:{geo_id:mongojs.ObjectId(id)}},
-        {$project:{ip_addressfrom:'$geo.ipfrom',ip_addressto:"$geo.ipto"}}],
-        (error, docs) => {
-            if(error){throw error;}
+app.get('/data/:ip', (req, res, db) => {
+    let ip = req.params.ip;
+    db.geo.findOne({ _id: mongojs.ip_from }, (error, docs) => {
+        if (error) {
+            throw error;
+        }
         res.json(docs);
-        });
-    }); 
+    });
+});
 
 /* // Basic CRUD operations
 app.get('/users/:id', (req, res) => {
