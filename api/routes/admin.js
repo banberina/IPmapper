@@ -23,7 +23,7 @@ module.exports = (router, db, mongojs, jwt, config) => {
         }
     })
 
-    router.get('/',(req,res)=>{
+    router.get('/data',(req,res)=>{
         let limit = Number(req.query.limit)||10;
         let skip = Number(req.query.skip)||0;
         db.geo.find({}).skip(skip).limit(limit,(error,docs)=> {

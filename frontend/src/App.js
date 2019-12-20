@@ -19,21 +19,13 @@ import IPinput from './components/Home/IPinput'
     return (
       <header>
         <BrowserRouter>
-        <Navbar/>
           <ParticlesBg type="cobweb" bg={true}/>
           <Switch>
             <Route exact path='/' component={IPinput}/>
-            {/* <Route path='/lookup/:ip' component={Lookup}/>
-            <Route exact path='/lookup' component={Lookup}/>
-            <Route path='/reversedns/:ip' component={ReverseDNS}/>
-            <Route path='/reversedns' component={ReverseDNSInput}/>
-            <Route path='/details/:ip' component={Details}/>
-            <Route path='/details' component={DetailsInput}/>
-            <Route path='/proxy/:ip' component={ProxyInfo}/>
-            <Route path='/proxy/' component={ProxyInput}/> */}
             <Route path="*" component={NotFound} />
           </Switch>
         </BrowserRouter>
+        
         <Particles params={{
         "particles": {
           "number": {

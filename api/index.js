@@ -99,7 +99,7 @@ app.use((req, res, next) => {
     next();
 });
 
-app.get('/data', (req, res) => {
+/* app.get('/data', (req, res) => {
     let limit = Number(req.query.limit) || 10;
     let skip = Number(req.query.skip) || 0;
     db.geo.find({}).skip(skip).limit(limit, (error, docs) => {
@@ -108,10 +108,10 @@ app.get('/data', (req, res) => {
         }
         res.json(docs);
     });
-});
+}); */
 
 /* App version endpoint */
-app.get('/version', (res) => {
+app.get('/version', (req,res) => {
     res.json({
         app_name: 'IPmapper',
         version: 'v1.0.0'
@@ -120,10 +120,9 @@ app.get('/version', (res) => {
 
 
 
-
 app.get('/data/:ip', (req, res, db) => {
     let ip = req.params.ip;
-    db.geo.findOne({ _id: mongojs.ip_from }, (error, docs) => {
+    db.geo.findOne({ ip: mongojs.ip }, (error, docs) => {
         if (error) {
             throw error;
         }
