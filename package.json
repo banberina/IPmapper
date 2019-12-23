@@ -20,5 +20,6 @@
   "bugs": {
     "url": "https://github.com/banberina/IPmapper/issues"
   },
-  "homepage": "https://github.com/banberina/IPmapper#readme"
+  "homepage": "https://github.com/banberina/IPmapper#readme",
+  "dependencies": {}
 }

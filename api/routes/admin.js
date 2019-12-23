@@ -115,34 +115,34 @@ module.exports = (router, db, mongojs, jwt, config) => {
 
     router.delete('/asn/:id',(req,res)=> {
         let id=req.params.id;
-        db.asn.remove({_id:mongojos.ObjectId(id)},[true],(error,docs)=> {
+        db.asn.remove({_id:mongojs.ObjectId(id)},[true],(error,docs)=> {
             res.json(docs);
         });
     });
 
     router.delete('/geo/:id',(req,res)=> {
         let id=req.params.id;
-        db.geo.remove({_id:mongojos.ObjectId(id)},[true],(error,docs)=> {
+        db.geo.remove({_id:mongojs.ObjectId(id)},[true],(error,docs)=> {
             res.json(docs);
         });
     });
 
     router.delete('/geoipv6/:id',(req,res)=> {
         let id=req.params.id;
-        db.geoipv6.remove({_id:mongojos.ObjectId(id)},[true],(error,docs)=> {
+        db.geoipv6.remove({_id:mongojs.ObjectId(id)},[true],(error,docs)=> {
             res.json(docs);
         });
     });
 
     router.delete('/proxy/:id',(req,res)=> {
         let id=req.params.id;
-        db.proxy.remove({_id:mongojos.ObjectId(id)},[true],(error,docs)=> {
+        db.proxy.remove({_id:mongojs.ObjectId(id)},[true],(error,docs)=> {
             res.json(docs);
         });
     });
     router.delete('/user/:id',(req,res)=> {
         let id=req.params.id;
-        db.users.remove({_id:mongojos.ObjectId(id)},[true],(error,docs)=> {
+        db.users.remove({_id:mongojs.ObjectId(id)},[true],(error,docs)=> {
             res.json(docs);
         });
     });

@@ -2,6 +2,7 @@ const express = require('express');
 const mongojs = require('mongojs');
 const bodyParser = require('body-parser');
 const jwt = require('jsonwebtoken');
+const ipInt = require('ip-to-int');
 
 let config;
 if (!process.env.HEROKU) {
@@ -99,17 +100,6 @@ app.use((req, res, next) => {
     next();
 });
 
-/* app.get('/data', (req, res) => {
-    let limit = Number(req.query.limit) || 10;
-    let skip = Number(req.query.skip) || 0;
-    db.geo.find({}).skip(skip).limit(limit, (error, docs) => {
-        if (error) {
-            throw error;
-        }
-        res.json(docs);
-    });
-}); */
-
 /* App version endpoint */
 app.get('/version', (req,res) => {
     res.json({
@@ -118,65 +108,34 @@ app.get('/version', (req,res) => {
     });
 });
 
-
-
-app.get('/data/:ip', (req, res, db) => {
-    let ip = req.params.ip;
-    db.geo.findOne({ ip: mongojs.ip }, (error, docs) => {
+app.get('/:ip',(req, res)  => {
+    var ip = req.params.ip;
+    var ipint=ipInt(ip).toInt;
+    /* db.geo.findOne({ipfrom: ip}, (error, docs) => {
         if (error) {
             throw error;
         }
         res.json(docs);
-    });
-});
-
-/* // Basic CRUD operations
-app.get('/users/:id', (req, res) => {
-    let id = req.params.id;
-    db.items.findOne({ _id: mongojs.ObjectId(id) }, (error, docs) => {
+    }); */
+    db.geo.findOne({$and:[{ipfrom:{$gte:ipint}},{ipto:{$lte:ipint}}]}, (error, docs) => {
         if (error) {
             throw error;
         }
         res.json(docs);
-    });
+    }); 
 });
 
-app.post('/users',(req,res)=> {
-    db.users.insert(req.body,(error,docs)=>{
-        res.json(docs);
-    });
-});
-
-app.put('/users/:id', (req, res) => {
-    let id = req.params.id;
-    let userUpdate = req.body;
-    db.items.findAndModify({ 
-        query: { _id: mongojs.ObjectId(id) }, update: { $set: userUpdate }, new: true
-    }, (error, docs) => {
-        res.json(docs);
-    })
-});
-
-app.delete('/users/:id', (req, res) => {
-    let id = req.params.id;
-    db.items.remove({ _id: mongojs.ObjectId(id) }, [true], (error, docs) => {
+app.get('/current',(req,res)=> {
+    var currentip=ipInt(req.ip).toInt;
+    console.log(currentip);
+    db.geo.findOne({$and:[{ipfrom:{$gte:currentip}},{ipto:{$lte:currentip}}]},(err,docs)=> {
         if (error) {
             throw error;
         }
         res.json(docs);
+       
     });
 });
 
-//Pagination
-app.get('/data',(req,res)=>{
-    let limit = Number(req.query.limit)||10;
-    let skip = Number(req.query.skip)||0;
-    db.geo.find({}).skip(skip).limit(limit,(error,docs)=> {
-        if(error) {
-            throw error;
-        }
-        res.json(docs);
-    });
-}); */
 
-app.listen(port, () => console.log(`Example app listening on port ${port}!`)) 
+app.listen(port, () => console.log(`Example app listening on port ${port}!`)); 
