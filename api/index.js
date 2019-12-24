@@ -3,6 +3,7 @@ const mongojs = require('mongojs');
 const bodyParser = require('body-parser');
 const jwt = require('jsonwebtoken');
 const ipInt = require('ip-to-int');
+var ip = require("ip");
 
 let config;
 if (!process.env.HEROKU) {
@@ -108,33 +109,28 @@ app.get('/version', (req,res) => {
     });
 });
 
-app.get('/:ip',(req, res)  => {
-    var ip = req.params.ip;
-    var ipint=ipInt(ip).toInt;
-    /* db.geo.findOne({ipfrom: ip}, (error, docs) => {
-        if (error) {
-            throw error;
-        }
-        res.json(docs);
-    }); */
-    db.geo.findOne({$and:[{ipfrom:{$gte:ipint}},{ipto:{$lte:ipint}}]}, (error, docs) => {
-        if (error) {
-            throw error;
-        }
-        res.json(docs);
-    }); 
-});
-
 app.get('/current',(req,res)=> {
-    var currentip=ipInt(req.ip).toInt;
-    console.log(currentip);
-    db.geo.findOne({$and:[{ipfrom:{$gte:currentip}},{ipto:{$lte:currentip}}]},(err,docs)=> {
+    var currentip=ipInt(ip.address()).toInt();
+    console.log(typeof currentip);
+    db.geo.findOne({$and:[{ipfrom:{$lte:currentip}},{ipto:{$gte:currentip}}]},(error,docs)=> {
         if (error) {
             throw error;
         }
         res.json(docs);
        
     });
+});
+
+app.get('/:ip',(req, res)  => {
+    var ip = req.params.ip;
+    var ipint=ipInt(ip).toInt();
+    console.log(ipint);
+    db.geo.findOne({$and:[{ipfrom:{$lte:ipint}},{ipto:{$gte:ipint}}]}, (error, docs) => {
+        if (error) {
+            throw error;
+        }
+        res.json(docs);
+    }); 
 });
 
 
