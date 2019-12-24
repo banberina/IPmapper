@@ -111,7 +111,7 @@ app.get('/version', (req,res) => {
 
 app.get('/current',(req,res)=> {
     var currentip=ipInt(ip.address()).toInt();
-    console.log(typeof currentip);
+    console.log( currentip);
     db.geo.findOne({$and:[{ipfrom:{$lte:currentip}},{ipto:{$gte:currentip}}]},(error,docs)=> {
         if (error) {
             throw error;
@@ -121,11 +121,35 @@ app.get('/current',(req,res)=> {
     });
 });
 
-app.get('/:ip',(req, res)  => {
+app.get('/geo/:ip',(req, res)  => {
     var ip = req.params.ip;
     var ipint=ipInt(ip).toInt();
     console.log(ipint);
     db.geo.findOne({$and:[{ipfrom:{$lte:ipint}},{ipto:{$gte:ipint}}]}, (error, docs) => {
+        if (error) {
+            throw error;
+        }
+        res.json(docs);
+    }); 
+});
+
+app.get('/asn/:ip',(req, res)  => {
+    var ip = req.params.ip;
+    var ipint=ipInt(ip).toInt();
+    console.log(ipint);
+    db.asn.findOne({$and:[{ipfrom:{$lte:ipint}},{ipto:{$gte:ipint}}]}, (error, docs) => {
+        if (error) {
+            throw error;
+        }
+        res.json(docs);
+    }); 
+});
+
+app.get('/proxy/:ip',(req, res)  => {
+    var ip = req.params.ip;
+    var ipint=ipInt(ip).toInt();
+    console.log(ipint);
+    db.proxy.findOne({$and:[{ipfrom:{$lte:ipint}},{ipto:{$gte:ipint}}]}, (error, docs) => {
         if (error) {
             throw error;
         }

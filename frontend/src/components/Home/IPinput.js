@@ -34,7 +34,7 @@ class IPinput extends Component {
                     <MDBRow>
                         <MDBCol>
                             <MDBJumbotron style={{  padding: 4 }}>
-                                <h3 className="h1 display-3">IP2Geo</h3>
+                                <h3 className="h1 display-3">IPMapper</h3>
                                 <h5>Get geo location from IP address</h5>
                                 <hr className="my-2" />
                                 <form name="id" onSubmit={this.handleSubmit}>
