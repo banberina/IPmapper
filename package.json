@@ -21,7 +21,8 @@
     "url": "https://github.com/banberina/IPmapper/issues"
   },
   "homepage": "https://github.com/banberina/IPmapper#readme",
-  "dependencies": {
-    "ip": "^1.1.5"
+  "dependencies": {},
+  "devDependencies": {
+    "concurrently": "^5.0.2"
   }
 }

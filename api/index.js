@@ -3,7 +3,7 @@ const mongojs = require('mongojs');
 const bodyParser = require('body-parser');
 const jwt = require('jsonwebtoken');
 const ipInt = require('ip-to-int');
-var ip = require("ip");
+const ip = require("ip");
 
 let config;
 if (!process.env.HEROKU) {
@@ -133,17 +133,6 @@ app.get('/geo/:ip',(req, res)  => {
     }); 
 });
 
-app.get('/asn/:ip',(req, res)  => {
-    var ip = req.params.ip;
-    var ipint=ipInt(ip).toInt();
-    console.log(ipint);
-    db.asn.findOne({$and:[{ipfrom:{$lte:ipint}},{ipto:{$gte:ipint}}]}, (error, docs) => {
-        if (error) {
-            throw error;
-        }
-        res.json(docs);
-    }); 
-});
 
 app.get('/proxy/:ip',(req, res)  => {
     var ip = req.params.ip;

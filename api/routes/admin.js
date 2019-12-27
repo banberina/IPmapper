@@ -1,7 +1,7 @@
-module.exports = (router, db, mongojs, jwt, config) => {
+module.exports = (router, db, mongojs, jwt, config,ip) => {
 
     router.use((req, res, next) => {
-        console.log(`Admin route accessed by: ${req.ip}` ); // log visits
+        console.log(`Admin route accessed by: ${ip.address()}` ); // log visits
 
         /* Check for proper JWT */
         let authorization = req.get('Authorization');
