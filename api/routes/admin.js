@@ -23,10 +23,56 @@ module.exports = (router, db, mongojs, jwt, config,ip) => {
         }
     })
 
-    router.get('/data',(req,res)=>{
+    /* GET all data from each collection (w/pagination) */
+
+    router.get('/asn',(req,res)=>{
+        let limit = Number(req.query.limit)||10;
+        let skip = Number(req.query.skip)||0;
+        db.asn.find({}).skip(skip).limit(limit,(error,docs)=> {
+            if(error) {
+                throw error;
+            }
+            res.json(docs);
+        });
+    }); 
+
+    router.get('/geo',(req,res)=>{
         let limit = Number(req.query.limit)||10;
         let skip = Number(req.query.skip)||0;
         db.geo.find({}).skip(skip).limit(limit,(error,docs)=> {
+            if(error) {
+                throw error;
+            }
+            res.json(docs);
+        });
+    });   
+    
+    router.get('/geoipv6',(req,res)=>{
+        let limit = Number(req.query.limit)||10;
+        let skip = Number(req.query.skip)||0;
+        db.ipv6.find({}).skip(skip).limit(limit,(error,docs)=> {
+            if(error) {
+                throw error;
+            }
+            res.json(docs);
+        });
+    }); 
+
+    router.get('/proxy',(req,res)=>{
+        let limit = Number(req.query.limit)||10;
+        let skip = Number(req.query.skip)||0;
+        db.proxy.find({}).skip(skip).limit(limit,(error,docs)=> {
+            if(error) {
+                throw error;
+            }
+            res.json(docs);
+        });
+    }); 
+
+    router.get('/users',(req,res)=>{
+        let limit = Number(req.query.limit)||10;
+        let skip = Number(req.query.skip)||0;
+        db.users.find({}).skip(skip).limit(limit,(error,docs)=> {
             if(error) {
                 throw error;
             }
@@ -50,7 +96,7 @@ module.exports = (router, db, mongojs, jwt, config,ip) => {
         });
     }); 
     router.post('/geoipv6',(req,res)=> { 
-        db.geoIPv6.insert(req.body,(error,docs)=>
+        db.geoipv6.insert(req.body,(error,docs)=>
         {
             res.json(docs);
         });
@@ -90,7 +136,7 @@ module.exports = (router, db, mongojs, jwt, config,ip) => {
     router.put('/geoipv6/:id',(req,res)=> {
         let id=req.params.id;
         let itemUpdate=req.body;
-        db.geoIPv6.updateOne({_id:mongojs.ObjectId(id)},{$set:itemUpdate},(error,docs)=> {
+        db.geoipv6.updateOne({_id:mongojs.ObjectId(id)},{$set:itemUpdate},(error,docs)=> {
             res.json(docs);
         });
     });
