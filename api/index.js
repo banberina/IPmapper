@@ -97,7 +97,7 @@ app.get('/login', (req, res) => {
 
 /* Visit-logging middleware */
 app.use((req, res, next) => {
-    console.log(`New visit from ${req.ip} at ${new Date()}`); // log visits
+    console.log(`New visit from ${ip.address()} at ${new Date()}`); // log visits
     next();
 });
 
@@ -115,7 +115,7 @@ app.get('/current',(req,res)=> {
     db.geo.findOne({$and:[{ipfrom:{$lte:currentip}},{ipto:{$gte:currentip}}]},(error,docs)=> {
         if (error) {
             throw error;
-        }
+        }  
         res.json(docs);
        
     });
