@@ -17,7 +17,7 @@ class IPinput extends Component {
     }
     handleSubmit = (e) => {
         e.preventDefault();
-        this.props.history.push(`/geo/${this.state.ip}`);
+        this.props.history.push(`/lookup/${this.state.ip}`);
         console.log(this.state);
 
     }
