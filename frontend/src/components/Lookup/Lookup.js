@@ -22,14 +22,14 @@ class Lookup extends Component {
     const { ip } = this.props.match.params;
     //console.log(ip);
     let lookupURl;
-    lookupURl = `localhost:4001/geo/${ip}`;
+    lookupURl = `https://ipmapper.herokuapp.com/geo/${ip}`;
     /*  if (ip) {
       lookupURl = `https://ip2geo-api.tribeos.io/lookup/${ip}`;
     } else {
       lookupURl = `https://ip2geo-api.tribeos.io/lookup`;
     }  */
 
-    axios.get(lookupURl, { headers: { Authorization: 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE1NjM5NTIxOTUsImRhdGEiOnsidXNlcl9pZCI6IjVjZTNjMjM1ZjA4NGQ1MDAxMzVhMGUwMyIsImFjY291bnRfaWQiOiI1Y2UzYzIzNWYwODRkNTAwMTM1YTBlMDIiLCJuYW1lIjoiQWRuYW4gTWlsamtvdmnEhyIsImlzX21hc3Rlcl9wYXNzd29yZCI6dHJ1ZX0sInNjb3BlcyI6eyJ0cmliZW9zX2FkdiI6IjVjZTNjMjQ2ODE1MjJlMDAxNjAxYWFkMiIsInRyaWJlb3NfcHViIjoiNWQwYTA1OTI2NmY3ZDIwMDEzN2U5NjRjIn19.NrsrOoaJNw1rAUAlbLx8EdUGd_TI6iJFi9PrW953hao' } })
+    axios.get(lookupURl)
       .then(res => {
         const ipdata = res.data.data[0];
         console.log(ipdata);
@@ -108,16 +108,12 @@ class Lookup extends Component {
                   <td>{ipdata.ip}</td>
                 </tr>
                 <tr>
-                  <td><h5>Type</h5></td>
-                  <td>{ipdata.type}</td>
-                </tr>
-                <tr>
                   <td><h5>Country</h5></td>
                   <td>{ipdata.country}</td>
                 </tr>
                 <tr>
-                  <td><h5>Country code 2</h5></td>
-                  <td>{ipdata.country_code_2}</td>
+                  <td><h5>Country short</h5></td>
+                  <td>{ipdata.country_short}</td>
                 </tr>
                 <tr>
                   <td><h5>Country code 3</h5></td>
@@ -126,10 +122,6 @@ class Lookup extends Component {
                 <tr>
                   <td><h5>Region</h5></td>
                   <td>{ipdata.region}</td>
-                </tr>
-                <tr>
-                  <td><h5>Region code 2</h5></td>
-                  <td>{ipdata.region_code}</td>
                 </tr>
                 <tr>
                   <td><h5>City</h5></td>
@@ -146,14 +138,6 @@ class Lookup extends Component {
                 <tr>
                   <td><h5>Zip code</h5></td>
                   <td>{ipdata.zip_code}</td>
-                </tr>
-                <tr>
-                  <td><h5>ISP</h5></td>
-                  <td>{ipdata.isp}</td>
-                </tr>
-                <tr>
-                  <td><h5>Domain</h5></td>
-                  <td>{ipdata.domain}</td>
                 </tr>
               </tbody>
             </Table>

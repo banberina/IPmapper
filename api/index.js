@@ -2,6 +2,7 @@ const express = require('express');
 const mongojs = require('mongojs');
 const bodyParser = require('body-parser');
 const jwt = require('jsonwebtoken');
+const cors=require('cors');
 const ipInt = require('ip-to-int');
 const ip = require("ip");
 
@@ -20,6 +21,7 @@ db = mongojs(process.env.MONGODB_URL || config.MONGODB_URL);
 
 app.use(express.static('../frontend/build'));
 app.use(bodyParser.json());
+app.use(cors());
 
 /* Global middleware */
 app.use((req, res, next) => {
