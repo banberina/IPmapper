@@ -20,18 +20,12 @@ class Lookup extends Component {
 
   componentDidMount() {
     const { ip } = this.props.match.params;
-    //console.log(ip);
     let lookupURl;
     lookupURl = `https://ipmapper.herokuapp.com/geo/${ip}`;
-    /*  if (ip) {
-      lookupURl = `https://ip2geo-api.tribeos.io/lookup/${ip}`;
-    } else {
-      lookupURl = `https://ip2geo-api.tribeos.io/lookup`;
-    }  */
 
     axios.get(lookupURl)
       .then(res => {
-        const ipdata = res.data.data[0];
+        const ipdata = res.data;
         console.log(ipdata);
         this.setState({ ipdata, isLoading: false})
       
@@ -42,6 +36,7 @@ class Lookup extends Component {
   render() {
     console.log(this.state.ipdata);
     const { ipdata, isLoading } = this.state;
+    const { ip } = this.props.match.params;
     while (isLoading)
       return (
         <Fragment>
@@ -105,7 +100,7 @@ class Lookup extends Component {
               <tbody>
                 <tr>
                   <td><h5>IP</h5></td>
-                  <td>{ipdata.ip}</td>
+                  <td>{ip}</td>
                 </tr>
                 <tr>
                   <td><h5>Country</h5></td>
@@ -114,10 +109,6 @@ class Lookup extends Component {
                 <tr>
                   <td><h5>Country short</h5></td>
                   <td>{ipdata.country_short}</td>
-                </tr>
-                <tr>
-                  <td><h5>Country code 3</h5></td>
-                  <td>{ipdata.country_code_3}</td>
                 </tr>
                 <tr>
                   <td><h5>Region</h5></td>
@@ -133,11 +124,11 @@ class Lookup extends Component {
                 </tr>
                 <tr>
                   <td><h5>Longitude</h5></td>
-                  <td>{ipdata.lng}</td>
+                  <td>{ipdata.lon}</td>
                 </tr>
                 <tr>
                   <td><h5>Zip code</h5></td>
-                  <td>{ipdata.zip_code}</td>
+                  <td>{ipdata.zipcode}</td>
                 </tr>
               </tbody>
             </Table>
