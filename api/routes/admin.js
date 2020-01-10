@@ -1,7 +1,7 @@
 module.exports = (router, db, mongojs, jwt, config,ip) => {
 
     router.use((req, res, next) => {
-        console.log(`Admin route accessed by: ${ip.address()}` ); // log visits
+        //console.log(`Admin route accessed by: ${ip.address()}` ); // log visits
 
         /* Check for proper JWT */
         let authorization = req.get('Authorization');
@@ -33,6 +33,7 @@ module.exports = (router, db, mongojs, jwt, config,ip) => {
                 throw error;
             }
             res.json(docs);
+            res.status(200);
         });
     }); 
 
@@ -44,17 +45,19 @@ module.exports = (router, db, mongojs, jwt, config,ip) => {
                 throw error;
             }
             res.json(docs);
+            res.status(200);
         });
     });   
     
-    router.get('/geoipv6',(req,res)=>{
+     router.get('/geoipv6',(req,res)=>{
         let limit = Number(req.query.limit)||10;
         let skip = Number(req.query.skip)||0;
-        db.ipv6.find({}).skip(skip).limit(limit,(error,docs)=> {
+        db.geoipv6.find({}).skip(skip).limit(limit,(error,docs)=> {
             if(error) {
                 throw error;
             }
             res.json(docs);
+            res.status(200);
         });
     }); 
 
@@ -66,8 +69,9 @@ module.exports = (router, db, mongojs, jwt, config,ip) => {
                 throw error;
             }
             res.json(docs);
+            res.status(200);
         });
-    }); 
+    });  
 
     router.get('/users',(req,res)=>{
         let limit = Number(req.query.limit)||10;
@@ -77,6 +81,7 @@ module.exports = (router, db, mongojs, jwt, config,ip) => {
                 throw error;
             }
             res.json(docs);
+            res.status(200);
         });
     }); 
 
@@ -86,25 +91,29 @@ module.exports = (router, db, mongojs, jwt, config,ip) => {
         db.asn.insert(req.body,(error,docs)=>
         {
             res.json(docs);
+            res.status(200);
         });
     }); 
 
-    router.post('/geo',(req,res)=> { 
+    /*router.post('/geo',(req,res)=> { 
         db.geo.insert(req.body,(error,docs)=>
         {
             res.json(docs);
+            res.status(200);
         });
     }); 
-    router.post('/geoipv6',(req,res)=> { 
+     router.post('/geoipv6',(req,res)=> { 
         db.geoipv6.insert(req.body,(error,docs)=>
         {
             res.json(docs);
+            res.status(200);
         });
     }); 
     router.post('/proxy',(req,res)=> { 
         db.proxy.insert(req.body,(error,docs)=>
         {
             res.json(docs);
+            res.status(200);
         });
     }); 
 
@@ -112,8 +121,9 @@ module.exports = (router, db, mongojs, jwt, config,ip) => {
         db.users.insert(req.body,(error,docs)=>
         {
             res.json(docs);
+            res.status(200);
         });
-    }); 
+    });  */
 
     /* UPDATE operations */
 
@@ -122,14 +132,16 @@ module.exports = (router, db, mongojs, jwt, config,ip) => {
         let itemUpdate=req.body;
         db.asn.updateOne({_id:mongojs.ObjectId(id)},{$set:itemUpdate},(error,docs)=> {
             res.json(docs);
+            res.status(200);
         });
     });
 
-    router.put('/geo/:id',(req,res)=> {
+ /*    router.put('/geo/:id',(req,res)=> {
         let id=req.params.id;
         let itemUpdate=req.body;
         db.geo.updateOne({_id:mongojs.ObjectId(id)},{$set:itemUpdate},(error,docs)=> {
             res.json(docs);
+            res.status(200);
         });
     });
 
@@ -138,6 +150,7 @@ module.exports = (router, db, mongojs, jwt, config,ip) => {
         let itemUpdate=req.body;
         db.geoipv6.updateOne({_id:mongojs.ObjectId(id)},{$set:itemUpdate},(error,docs)=> {
             res.json(docs);
+            res.status(200);
         });
     });
 
@@ -146,6 +159,7 @@ module.exports = (router, db, mongojs, jwt, config,ip) => {
         let itemUpdate=req.body;
         db.proxy.updateOne({_id:mongojs.ObjectId(id)},{$set:itemUpdate},(error,docs)=> {
             res.json(docs);
+            res.status(200);
         });
     });
 
@@ -154,15 +168,30 @@ module.exports = (router, db, mongojs, jwt, config,ip) => {
         let itemUpdate=req.body;
         db.users.updateOne({_id:mongojs.ObjectId(id)},{$set:itemUpdate},(error,docs)=> {
             res.json(docs);
+            res.status(200);
         });
-    });
+    }); */
 
     /* DELETE operations */
 
-    router.delete('/asn/:id',(req,res)=> {
+       
+    router.delete("/removetestasn", (req, res) => {
+        try{
+          db.asn.remove({_id:"5db80c9cbd6c4457a41a961f"})
+          console.log(getDate(Date.now()), "ASN record deleted")
+          res.send({response: "ASN record deleted"})
+          res.status(200)
+        } catch (e){
+          res.status(400)
+          console.log(e)
+        }
+      })
+
+ /*    router.delete('/asn/:id',(req,res)=> {
         let id=req.params.id;
         db.asn.remove({_id:mongojs.ObjectId(id)},[true],(error,docs)=> {
             res.json(docs);
+            res.status(200);
         });
     });
 
@@ -170,6 +199,7 @@ module.exports = (router, db, mongojs, jwt, config,ip) => {
         let id=req.params.id;
         db.geo.remove({_id:mongojs.ObjectId(id)},[true],(error,docs)=> {
             res.json(docs);
+            res.status(200);
         });
     });
 
@@ -177,6 +207,7 @@ module.exports = (router, db, mongojs, jwt, config,ip) => {
         let id=req.params.id;
         db.geoipv6.remove({_id:mongojs.ObjectId(id)},[true],(error,docs)=> {
             res.json(docs);
+            res.status(200);
         });
     });
 
@@ -184,14 +215,17 @@ module.exports = (router, db, mongojs, jwt, config,ip) => {
         let id=req.params.id;
         db.proxy.remove({_id:mongojs.ObjectId(id)},[true],(error,docs)=> {
             res.json(docs);
+            res.status(200);
         });
     });
     router.delete('/user/:id',(req,res)=> {
         let id=req.params.id;
         db.users.remove({_id:mongojs.ObjectId(id)},[true],(error,docs)=> {
             res.json(docs);
+            res.status(200);
         });
-    });
+    }); */
 
+ 
 
 }

@@ -15,10 +15,9 @@ if (!process.env.HEROKU) {
 //Mongo DB connection
 const app = express();
 const port = process.env.PORT || 4000;
-
 db = mongojs(process.env.MONGODB_URL || config.MONGODB_URL);
 
-
+module.exports=app;
 app.use(express.static('../frontend/build'));
 app.use(bodyParser.json());
 app.use(cors());
@@ -73,10 +72,11 @@ app.get('/login', (req, res) => {
                     }
                     let jwtToken = jwt.sign({
                         ...data,
-                        exp: (Math.floor(Date.now() / 1000) + 3600), // token which lasts for an hour
+                        //exp: '365d',//(Math.floor(Date.now() / 1000) + 3600), // token which lasts for an hour
                         id: doc._id,
                         type: doc.type
                     }, process.env.JWT_SECRET || config.JWT_SECRET);
+                    res.status(200);
                     /* Output the JWT */
                     res.json({ 'jwt': jwtToken });
                 });
@@ -109,9 +109,10 @@ app.get('/version', (req,res) => {
         app_name: 'IPmapper',
         version: 'v1.0.0'
     });
+    res.status(200);
 });
 
-app.get('/current',(req,res)=> {
+/* app.get('/current',(req,res)=> {
     var currentip=ipInt(ip.address()).toInt();
     console.log( currentip);
     db.geo.findOne({$and:[{ipfrom:{$lte:currentip}},{ipto:{$gte:currentip}}]},(error,docs)=> {
@@ -119,9 +120,10 @@ app.get('/current',(req,res)=> {
             throw error;
         }  
         res.json(docs);
-       
+        res.status(200);
     });
-});
+
+}); */
 
 app.get('/geo/:ip',(req, res)  => {
     var ip = req.params.ip;
@@ -132,6 +134,7 @@ app.get('/geo/:ip',(req, res)  => {
             throw error;
         }
         res.json(docs);
+        res.status(200);
     }); 
 });
 
@@ -145,8 +148,23 @@ app.get('/proxy/:ip',(req, res)  => {
             throw error;
         }
         res.json(docs);
+        res.status(200);
+    }); 
+});
+
+app.get('/asn/:ip',(req, res)  => {
+    var ip = req.params.ip;
+    var ipint=ipInt(ip).toInt();
+    console.log(ipint);
+    db.asn.findOne({$and:[{ipfrom:{$lte:ipint}},{ipto:{$gte:ipint}}]}, (error, docs) => {
+        if (error) {
+            throw error;
+        }
+        res.json(docs);
+        res.status(200);
     }); 
 });
 
 
-app.listen(port, () => console.log(`Example app listening on port ${port}!`)); 
+
+//app.listen(port, () => console.log(`Example app listening on port ${port}!`)); 

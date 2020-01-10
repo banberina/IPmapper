@@ -24,8 +24,8 @@ import CurrentIP from './components/Lookup/CurrentIP'
           <ParticlesBg type="cobweb" bg={true}/>
           <Switch>
             <Route exact path='/' component={IPinput}/>
-            <Route exact path='/lookup/:ip' component={Lookup}/>
-            <Route exact path='/lookup' component={CurrentIP}/>
+            <Route path='/lookup/:ip' component={Lookup}/>
+            <Route path='/lookup' component={CurrentIP}/>
             <Route path='/reversedns/:ip' component={ReverseDNS}/>
             <Route path='/reversedns' component={ReverseDNSInput}/>
             <Route path='/details/:ip' component={Details}/>
