@@ -39,30 +39,6 @@ describe("Admin routes tests", () => {
         expect(res.statusCode).toEqual(200);
     })
 
-    it("should return geo data", async () => {
-        const res = await request(app)
-            .get("/admin/geo")
-            .set({ Authorization: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVkZDNlODg2MmRjYzAyYjU1Yzk0ZTY3MiIsImVtYWlsIjoiYmVyaW5hLmJhbmRpY0BzdHUuaWJ1LmVkdS5iYSIsInZlcmlmaWVkX2VtYWlsIjp0cnVlLCJuYW1lIjoiQmVyaW5hIEJhbmRpxIciLCJnaXZlbl9uYW1lIjoiQmVyaW5hIiwiZmFtaWx5X25hbWUiOiJCYW5kacSHIiwicGljdHVyZSI6Imh0dHBzOi8vbGgzLmdvb2dsZXVzZXJjb250ZW50LmNvbS9hLS9BQXVFN21COFlPcUZqLVpHdlhQUjRPNHY2dVphaEFncllJV21fOWpiWjNKYiIsImxvY2FsZSI6ImVuIiwiaGQiOiJzdHUuaWJ1LmVkdS5iYSIsInR5cGUiOiJhZG1pbiIsImlhdCI6MTU3ODMzMjMyNn0.obrs8KBS0W0WOejh5W1QTs8yeK7kiH6JVE8aEeNmoWc" })
-        let obj = res.body
-        expect(obj[0].country).toEqual("Japan")
-        expect(obj[0].region).toEqual("Yamaguchi")
-        expect(obj[0].lat).toEqual("34.183")
-        expect(obj[0].lon).toEqual("131.467")
-        expect(obj[0].zipcode).toEqual("754-0893")
-        expect(obj[3].country).toEqual("Japan")
-        expect(obj[3].region).toEqual("Tottori")
-        expect(obj[3].lat).toEqual("35.433")
-        expect(obj[3].lon).toEqual("133.333")
-        expect(obj[3].zipcode).toEqual("683-0846")
-        expect(obj[5].country).toEqual("Japan")
-        expect(obj[5].region).toEqual("Okayama")
-        expect(obj[5].lat).toEqual("34.65")
-        expect(obj[5].lon).toEqual("133.917")
-        expect(obj[5].zipcode).toEqual("700-0824")
-        
-        expect(res.statusCode).toEqual(200);
-    })
-
     it("should return geoipv6 data", async () => {
         const res = await request(app)
             .get("/admin/geoipv6")
