@@ -1,14 +1,9 @@
 import React, { Component } from 'react';
 import { MDBNavbar, MDBNavbarBrand, MDBNavbarNav, MDBNavbarToggler, MDBCollapse, MDBNavItem, MDBNavLink } from 'mdbreact';
 import './navbar.css'
-/* import PropTypes from 'prop-types';
-import { makeStyles } from '@material-ui/core/styles';
-import AppBar from '@material-ui/core/AppBar';
-import Tabs from '@material-ui/core/Tabs';
-import Tab from '@material-ui/core/Tab';
-import Typography from '@material-ui/core/Typography';
-import Box from '@material-ui/core/Box'; */
 
+import GoogleSignInButton from '../GoogleSignInButton';
+import { hasValidJwt } from '../../utils/jwtValidator';
 class Navbar extends Component {
   constructor(props) {
     super(props);
@@ -41,12 +36,24 @@ class Navbar extends Component {
                 <MDBNavLink to="/details"><h6>Details</h6></MDBNavLink>
               </MDBNavItem>
               <MDBNavItem>
-                <MDBNavLink to="/reversedns"><h6>Reverse DNS</h6></MDBNavLink>
+                { hasValidJwt()? (
+                  <MDBNavLink to="/asnlookup"><h6>Reverse DNS</h6></MDBNavLink>
+                ) :(<div></div>)
+                }
               </MDBNavItem>
               <MDBNavItem>
                 <MDBNavLink to="/proxy"><h6>Proxy Data</h6></MDBNavLink>
               </MDBNavItem>
             </MDBNavbarNav>
+            <MDBNavbar right >
+                        
+                  {      hasValidJwt() ? (
+                    <h6>You are logged in. </h6>
+                ) : (
+                    <GoogleSignInButton />
+                )}
+                    
+                        </MDBNavbar>
           </MDBCollapse>
         </MDBNavbar>
       </div>

@@ -105,7 +105,7 @@ describe("Admin routes tests", () => {
 
     })
 
-    it("edit existing asn record (change of company name)", async () => {
+     it("should edit existing asn record (change of company name)", async () => {
         asnModel.company="Some random company"
         const res = await request(app)
        
@@ -122,7 +122,7 @@ describe("Admin routes tests", () => {
                 .delete("/admin/removetestasn");
         }
 
-    });
+    }); 
 
 
 });

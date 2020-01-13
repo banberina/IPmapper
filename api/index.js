@@ -72,13 +72,11 @@ app.get('/login', (req, res) => {
                     }
                     let jwtToken = jwt.sign({
                         ...data,
-                        //exp: '365d',//(Math.floor(Date.now() / 1000) + 3600), // token which lasts for an hour
+                        exp: (Math.floor(Date.now() / 1000) + 3600), // token which lasts for an hour
                         id: doc._id,
                         type: doc.type
                     }, process.env.JWT_SECRET || config.JWT_SECRET);
-                    res.status(200);
-                    /* Output the JWT */
-                    res.json({ 'jwt': jwtToken });
+                    res.redirect(`${CLIENT_URL}/auth#jwt=${jwtToken}`);                    /* Output the JWT */
                 });
             });
         });
@@ -112,7 +110,7 @@ app.get('/version', (req,res) => {
     res.status(200);
 });
 
-/* app.get('/current',(req,res)=> {
+ app.get('/current',(req,res)=> {
     var currentip=ipInt(ip.address()).toInt();
     console.log( currentip);
     db.geo.findOne({$and:[{ipfrom:{$lte:currentip}},{ipto:{$gte:currentip}}]},(error,docs)=> {
@@ -123,7 +121,7 @@ app.get('/version', (req,res) => {
         res.status(200);
     });
 
-}); */
+}); 
 
 app.get('/geo/:ip',(req, res)  => {
     var ip = req.params.ip;
@@ -167,4 +165,4 @@ app.get('/asn/:ip',(req, res)  => {
 
 
 
-//app.listen(port, () => console.log(`Example app listening on port ${port}!`)); 
+app.listen(port, () => console.log(`Example app listening on port ${port}!`)); 

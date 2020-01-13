@@ -1,7 +1,7 @@
 module.exports = (router, db, mongojs, jwt, config,ip) => {
 
     router.use((req, res, next) => {
-        //console.log(`Admin route accessed by: ${ip.address()}` ); // log visits
+        console.log(`Admin route accessed by: ${ip.address()}` ); // log visits
 
         /* Check for proper JWT */
         let authorization = req.get('Authorization');
@@ -95,7 +95,7 @@ module.exports = (router, db, mongojs, jwt, config,ip) => {
         });
     }); 
 
-    /*router.post('/geo',(req,res)=> { 
+    router.post('/geo',(req,res)=> { 
         db.geo.insert(req.body,(error,docs)=>
         {
             res.json(docs);
@@ -123,7 +123,7 @@ module.exports = (router, db, mongojs, jwt, config,ip) => {
             res.json(docs);
             res.status(200);
         });
-    });  */
+    });  
 
     /* UPDATE operations */
 
@@ -136,7 +136,7 @@ module.exports = (router, db, mongojs, jwt, config,ip) => {
         });
     });
 
- /*    router.put('/geo/:id',(req,res)=> {
+     router.put('/geo/:id',(req,res)=> {
         let id=req.params.id;
         let itemUpdate=req.body;
         db.geo.updateOne({_id:mongojs.ObjectId(id)},{$set:itemUpdate},(error,docs)=> {
@@ -170,7 +170,7 @@ module.exports = (router, db, mongojs, jwt, config,ip) => {
             res.json(docs);
             res.status(200);
         });
-    }); */
+    }); 
 
     /* DELETE operations */
 
@@ -187,7 +187,7 @@ module.exports = (router, db, mongojs, jwt, config,ip) => {
         }
       })
 
- /*    router.delete('/asn/:id',(req,res)=> {
+     router.delete('/asn/:id',(req,res)=> {
         let id=req.params.id;
         db.asn.remove({_id:mongojs.ObjectId(id)},[true],(error,docs)=> {
             res.json(docs);
@@ -224,7 +224,7 @@ module.exports = (router, db, mongojs, jwt, config,ip) => {
             res.json(docs);
             res.status(200);
         });
-    }); */
+    }); 
 
  
 

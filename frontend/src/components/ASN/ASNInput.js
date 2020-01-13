@@ -17,7 +17,7 @@ class ReverseDNS extends Component {
     }
     handleSubmit = (e) => {
         e.preventDefault();
-        this.props.history.push(`/reversedns/${this.state.ip}`);
+        this.props.history.push(`/asnlookup/${this.state.ip}`);
         console.log(this.state);
 
     }

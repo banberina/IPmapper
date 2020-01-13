@@ -29,7 +29,7 @@ module.exports = (router, db, mongojs, jwt, config, ip) => {
         next();
     });
 
- /*    router.get('/asn/:ip',(req, res)  => {
+     router.get('/asn/:ip',(req, res)  => {
         var ip = req.params.ip;
         var ipint=ipInt(ip).toInt();
         console.log(ipint);
@@ -40,6 +40,6 @@ module.exports = (router, db, mongojs, jwt, config, ip) => {
             res.json(docs);
             res.status(200);
         }); 
-    }); */
+    }); 
 
 }
