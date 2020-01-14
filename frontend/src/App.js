@@ -28,8 +28,7 @@ const AdminRoute = ({ component: Component, ...rest }) => (
     isAdmin() === true ? <Component {...props} /> : <Redirect to='/' />
   )} />
 )
-
-export default class App extends Component {
+class App extends Component {
   render() {
     return (
       <header>
@@ -71,3 +70,4 @@ export default class App extends Component {
     )
   }
 }
+ export default App;
