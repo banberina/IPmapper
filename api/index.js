@@ -10,22 +10,20 @@ let config;
 if (!process.env.HEROKU) {
     config = require('./config');
 }
-else config = process.env;
+else  {
+    config = process.env;
+}
 
 const app = express();
 const port = process.env.PORT || 4000;
-db = mongojs(config.MONGODB_URL);
 
+db = mongojs(config.MONGODB_URL);
 module.exports = app;
 app.use(express.static('../frontend/build'));
 app.use(bodyParser.json());
 app.use(cors());
 
-/* Global middleware */
-app.use((req, res, next) => {
-    console.log('Server time: ', Date.now());
-    next();
-});
+
 
 let admin_router = express.Router();
 require('./routes/admin.js')(admin_router, db, mongojs, jwt, config);
@@ -96,9 +94,17 @@ app.get('/login', (req, res) => {
     }
 });
 
+
+
 /* Visit-logging middleware */
 app.use((req, res, next) => {
     console.log(`New visit from ${ip.address()} at ${new Date()}`); // log visits
+    next();
+});
+
+/* Global middleware */
+app.use((req, res, next) => {
+    console.log('Server time: ', Date.now());
     next();
 });
 
