@@ -10,12 +10,12 @@ class LogOutButton extends Component {
     /* If you are on an "authorized" (PrivateRoute) page, you should be redirected to the home route. */
     logOut = () => {
         localStorage.removeItem('jwtToken');
-        window.location = '.';
+        window.location.reload();
     }
 
     render() {
         return (
-            <Button onClick={this.logOut} style={{ marginLeft: 10 }} variant='danger'>Log out</Button>
+            <Button onClick={this.logOut} style={{ marginLeft: 10 }}><h4>Sign out</h4></Button>
         )
     }
 }

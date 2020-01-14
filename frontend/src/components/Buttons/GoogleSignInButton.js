@@ -12,7 +12,6 @@ class GoogleSignInButton extends Component {
     /* Go to the login endpoint */
     signIn = async () => {
         window.location = `${config.BASE_URL}/login`;
-        window.location.replace(`${config.BASE_URL}/login`);
     }
 
     render() {
