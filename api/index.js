@@ -6,23 +6,26 @@ const cors = require('cors');
 const ipInt = require('ip-to-int');
 const ip = require("ip");
 
+/* Configuration import */
 let config;
 if (!process.env.HEROKU) {
     config = require('./config');
 }
-else  {
-    config = process.env;
-}
 
 const app = express();
 const port = process.env.PORT || 4000;
+const CLIENT_URL = process.env.CLIENT_URL  || config.CLIENT_URL;
 
-db = mongojs(config.MONGODB_URL);
+const db = mongojs(process.env.MONGODB_URL || config.MONGODB_URL);
+
+app.use('/', express.static('./../frontend/build'));
+app.use(bodyParser.json());
+
+
 module.exports = app;
 app.use(express.static('../frontend/build'));
 app.use(bodyParser.json());
 app.use(cors());
-
 
 
 let admin_router = express.Router();
@@ -36,12 +39,12 @@ app.use('/user', user_router);
 
 const { google } = require('googleapis');
 const oauth2Client = new google.auth.OAuth2(
-    config.CLIENT_ID,
-    config.CLIENT_SECRET,
-    config.REDIRECT_URL
+    process.env.CLIENT_ID || config.CLIENT_ID,
+    process.env.CLIENT_SECRET || config.CLIENT_SECRET,
+    process.env.REDIRECT_URL || config.REDIRECT_URL
 );
 
-const CLIENT_URL = config.CLIENT_URL;
+
 
 app.get('/login', (req, res) => {
     let code = req.query.code;
@@ -74,7 +77,7 @@ app.get('/login', (req, res) => {
                         exp: (Math.floor(Date.now() / 1000) + 3600), // token which lasts for an hour
                         id: doc._id,
                         role: doc.type
-                    }, config.JWT_SECRET);
+                    }, process.env.JWT_SECRET || config.JWT_SECRET);
                     res.redirect(`${CLIENT_URL}/auth#jwt=${jwtToken}`);  /* Output the JWT */
                 });
             });
