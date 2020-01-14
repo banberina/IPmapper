@@ -34,4 +34,4 @@ class Auth extends Component {
     }
 }
 
-export default Auth;
+export default withRouter(Auth);
