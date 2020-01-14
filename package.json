@@ -1,7 +1,7 @@
 {
   "name": "ipmapper",
   "version": "1.0.0",
-  "description": "-Everyone can use it",
+  "description": "Goal is to provide Internet users service of finding out some additional data using IP address",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
