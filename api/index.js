@@ -12,8 +12,6 @@ if (!process.env.HEROKU) {
 }
 else config = process.env;
 
-
-//Mongo DB connection
 const app = express();
 const port = process.env.PORT || 4000;
 db = mongojs(config.MONGODB_URL);
@@ -168,4 +166,4 @@ app.get('/asn/:ip', (req, res) => {
 
 
 
-app.listen(port, () => console.log(`Example app listening on port ${port}!`)); 
+app.listen(port, () => console.log(`IPMapper listening on port ${port}!`)); 
