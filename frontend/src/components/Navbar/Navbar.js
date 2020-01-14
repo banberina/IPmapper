@@ -2,8 +2,10 @@ import React, { Component } from 'react';
 import { MDBNavbar, MDBNavbarBrand, MDBNavbarNav, MDBNavbarToggler, MDBCollapse, MDBNavItem, MDBNavLink } from 'mdbreact';
 import './navbar.css'
 
-import GoogleSignInButton from '../GoogleSignInButton';
+import GoogleSignInButton from '../Buttons/GoogleSignInButton';
+import SignOutButton from '../Buttons/LogOutButton'
 import { hasValidJwt } from '../../utils/jwtValidator';
+import { isAdmin } from '../../utils/isAdmin'
 class Navbar extends Component {
   constructor(props) {
     super(props);
@@ -30,30 +32,32 @@ class Navbar extends Component {
           <MDBCollapse isOpen={this.state.collapse} navbar>
             <MDBNavbarNav left>
               <MDBNavItem>
-                <MDBNavLink to="/lookup"><h6>Current IP Lookup</h6></MDBNavLink>
+                <MDBNavLink to={'/lookup'}><h6>Current IP Lookup</h6></MDBNavLink>
               </MDBNavItem>
-              <MDBNavItem>
+              {hasValidJwt() && isAdmin() ?
+                (<MDBNavItem>
                 <MDBNavLink to="/details"><h6>Details</h6></MDBNavLink>
               </MDBNavItem>
+              ): (null)
+              }
+              
               <MDBNavItem>
-                { hasValidJwt()? (
-                  <MDBNavLink to="/asnlookup"><h6>Reverse DNS</h6></MDBNavLink>
-                ) :(<div></div>)
+                {hasValidJwt() ? (
+                  <MDBNavLink to="/asnlookup"><h6>ASN</h6></MDBNavLink>
+                ) : (null)
                 }
               </MDBNavItem>
               <MDBNavItem>
                 <MDBNavLink to="/proxy"><h6>Proxy Data</h6></MDBNavLink>
               </MDBNavItem>
             </MDBNavbarNav>
-            <MDBNavbar right >
-                        
-                  {      hasValidJwt() ? (
-                    <h6>You are logged in. </h6>
-                ) : (
-                    <GoogleSignInButton />
+            <MDBNavItem right >
+              {hasValidJwt() ? (
+                <SignOutButton/>
+              ) : (
+                  <GoogleSignInButton />
                 )}
-                    
-                        </MDBNavbar>
+            </MDBNavItem>
           </MDBCollapse>
         </MDBNavbar>
       </div>

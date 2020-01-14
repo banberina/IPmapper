@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
 
-import './../css/google-button.css';
-import config from '../config';
+import '../../css/google-button.css';
+import config from '../../config';
+import axios from 'axios';
 
 class GoogleSignInButton extends Component {
     constructor(props) {
@@ -9,8 +10,9 @@ class GoogleSignInButton extends Component {
     }
 
     /* Go to the login endpoint */
-    signIn = () => {
+    signIn = async () => {
         window.location = `${config.BASE_URL}/login`;
+        window.location.replace(`${config.BASE_URL}/login`);
     }
 
     render() {

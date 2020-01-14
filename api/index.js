@@ -2,7 +2,7 @@ const express = require('express');
 const mongojs = require('mongojs');
 const bodyParser = require('body-parser');
 const jwt = require('jsonwebtoken');
-const cors=require('cors');
+const cors = require('cors');
 const ipInt = require('ip-to-int');
 const ip = require("ip");
 
@@ -10,14 +10,15 @@ let config;
 if (!process.env.HEROKU) {
     config = require('./config');
 }
+else config = process.env;
 
 
 //Mongo DB connection
 const app = express();
 const port = process.env.PORT || 4000;
-db = mongojs(process.env.MONGODB_URL || config.MONGODB_URL);
+db = mongojs(config.MONGODB_URL);
 
-module.exports=app;
+module.exports = app;
 app.use(express.static('../frontend/build'));
 app.use(bodyParser.json());
 app.use(cors());
@@ -39,10 +40,12 @@ app.use('/user', user_router);
 
 const { google } = require('googleapis');
 const oauth2Client = new google.auth.OAuth2(
-    process.env.CLIENT_ID || config.CLIENT_ID,
-    process.env.CLIENT_SECRET || config.CLIENT_SECRET,
-    process.env.REDIRECT_URL || config.REDIRECT_URL
+    config.CLIENT_ID,
+    config.CLIENT_SECRET,
+    config.REDIRECT_URL
 );
+
+const CLIENT_URL = config.CLIENT_URL;
 
 app.get('/login', (req, res) => {
     let code = req.query.code;
@@ -74,9 +77,9 @@ app.get('/login', (req, res) => {
                         ...data,
                         exp: (Math.floor(Date.now() / 1000) + 3600), // token which lasts for an hour
                         id: doc._id,
-                        type: doc.type
-                    }, process.env.JWT_SECRET || config.JWT_SECRET);
-                    res.redirect(`${CLIENT_URL}/auth#jwt=${jwtToken}`);                    /* Output the JWT */
+                        role: doc.type
+                    }, config.JWT_SECRET);
+                    res.redirect(`${CLIENT_URL}/auth#jwt=${jwtToken}`);  /* Output the JWT */
                 });
             });
         });
@@ -102,7 +105,7 @@ app.use((req, res, next) => {
 });
 
 /* App version endpoint */
-app.get('/version', (req,res) => {
+app.get('/version', (req, res) => {
     res.json({
         app_name: 'IPmapper',
         version: 'v1.0.0'
@@ -110,57 +113,57 @@ app.get('/version', (req,res) => {
     res.status(200);
 });
 
- app.get('/current',(req,res)=> {
-    var currentip=ipInt(ip.address()).toInt();
-    console.log( currentip);
-    db.geo.findOne({$and:[{ipfrom:{$lte:currentip}},{ipto:{$gte:currentip}}]},(error,docs)=> {
+app.get('/current', (req, res) => {
+    var currentip = ipInt(ip.address()).toInt();
+    console.log(currentip);
+    db.geo.findOne({ $and: [{ ipfrom: { $lte: currentip } }, { ipto: { $gte: currentip } }] }, (error, docs) => {
         if (error) {
             throw error;
-        }  
+        }
         res.json(docs);
         res.status(200);
     });
 
-}); 
+});
 
-app.get('/geo/:ip',(req, res)  => {
+app.get('/geo/:ip', (req, res) => {
     var ip = req.params.ip;
-    var ipint=ipInt(ip).toInt();
+    var ipint = ipInt(ip).toInt();
     console.log(ipint);
-    db.geo.findOne({$and:[{ipfrom:{$lte:ipint}},{ipto:{$gte:ipint}}]}, (error, docs) => {
+    db.geo.findOne({ $and: [{ ipfrom: { $lte: ipint } }, { ipto: { $gte: ipint } }] }, (error, docs) => {
         if (error) {
             throw error;
         }
         res.json(docs);
         res.status(200);
-    }); 
+    });
 });
 
 
-app.get('/proxy/:ip',(req, res)  => {
+app.get('/proxy/:ip', (req, res) => {
     var ip = req.params.ip;
-    var ipint=ipInt(ip).toInt();
+    var ipint = ipInt(ip).toInt();
     console.log(ipint);
-    db.proxy.findOne({$and:[{ipfrom:{$lte:ipint}},{ipto:{$gte:ipint}}]}, (error, docs) => {
+    db.proxy.findOne({ $and: [{ ipfrom: { $lte: ipint } }, { ipto: { $gte: ipint } }] }, (error, docs) => {
         if (error) {
             throw error;
         }
         res.json(docs);
         res.status(200);
-    }); 
+    });
 });
 
-app.get('/asn/:ip',(req, res)  => {
+app.get('/asn/:ip', (req, res) => {
     var ip = req.params.ip;
-    var ipint=ipInt(ip).toInt();
+    var ipint = ipInt(ip).toInt();
     console.log(ipint);
-    db.asn.findOne({$and:[{ipfrom:{$lte:ipint}},{ipto:{$gte:ipint}}]}, (error, docs) => {
+    db.asn.findOne({ $and: [{ ipfrom: { $lte: ipint } }, { ipto: { $gte: ipint } }] }, (error, docs) => {
         if (error) {
             throw error;
         }
         res.json(docs);
         res.status(200);
-    }); 
+    });
 });
 
 

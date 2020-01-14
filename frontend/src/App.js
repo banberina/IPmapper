@@ -1,5 +1,5 @@
-import React, {Component} from 'react'
-import {BrowserRouter,Route,Switch,Redirect} from 'react-router-dom'
+import React, { Component } from 'react'
+import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom'
 import Navbar from './components/Navbar/Navbar'
 import Lookup from './components/Lookup/Lookup'
 import ASN from './components/ASN/ASN'
@@ -13,54 +13,61 @@ import Particles from 'react-particles-js'
 import IPinput from './components/Home/IPinput'
 import CurrentIP from './components/Lookup/CurrentIP'
 import { hasValidJwt } from './utils/jwtValidator';
+import { isAdmin } from './utils/isAdmin'
 import Auth from './components/Authorization/Auth'
 
 /* Private routes - if the user is authenticated, render component; otherwise redirect to home page */
-const PrivateRoute = ({ component: Component, ...rest }) => (
+const UserRoute = ({ component: Component, ...rest }) => (
   <Route {...rest} render={(props) => (
-      hasValidJwt() === true ? <Component {...props} /> : <Redirect to='/' />
+    hasValidJwt() === true ? <Component {...props} /> : <Redirect to='/' />
   )} />
 )
 
- export default class App extends Component {
+const AdminRoute = ({ component: Component, ...rest }) => (
+  <Route {...rest} render={(props) => (
+    isAdmin() === true ? <Component {...props} /> : <Redirect to='/' />
+  )} />
+)
+
+export default class App extends Component {
   render() {
     return (
       <header>
         <BrowserRouter>
-        <Navbar/>
-          <ParticlesBg type="cobweb" bg={true}/>
+          <Navbar />
+          <ParticlesBg type="cobweb" bg={true} />
           <Switch>
-            <Route exact path='/' component={IPinput}/>
+            <Route exact path='/' component={IPinput} />
             <Route exact path='/auth' component={Auth} />
-            <Route path='/lookup/:ip' component={Lookup}/>
-            <Route path='/lookup' component={CurrentIP}/>
-            <Route path='/proxy/:ip' component={ProxyInfo}/>
-            <Route path='/proxy/' component={ProxyInput}/>
-            <PrivateRoute path='/asnlookup/:ip' component={ASN}/>
-            <PrivateRoute path='/asnlookup' component={ASNInput}/>
-            <Route path='/details' component={Details}/>
+            <Route path='/lookup/:ip' component={Lookup} />
+            <Route path='/lookup' component={CurrentIP} />
+            <Route path='/proxy/:ip' component={ProxyInfo} />
+            <Route path='/proxy/' component={ProxyInput} />
+            <UserRoute path='/asnlookup/:ip' component={ASN} />
+            <UserRoute path='/asnlookup' component={ASNInput} />
+            <AdminRoute path='/details' component={Details} />
             <Route path="*" component={NotFound} />
           </Switch>
         </BrowserRouter>
         <Particles params={{
-        "particles": {
-          "number": {
-            "value": 120
+          "particles": {
+            "number": {
+              "value": 120
+            },
+            "size": {
+              "value": 4
+            }
           },
-          "size": {
-            "value": 4
-          }
-        },
-        "interactivity": {
-          "events": {
-            "onhover": {
-              "enable": true,
-              "mode": "repulse"
+          "interactivity": {
+            "events": {
+              "onhover": {
+                "enable": true,
+                "mode": "repulse"
+              }
             }
           }
-        }
-      }} />
-        </header>
+        }} />
+      </header>
     )
   }
 }
