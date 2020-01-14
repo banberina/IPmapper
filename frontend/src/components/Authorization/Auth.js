@@ -20,7 +20,7 @@ class Auth extends Component {
             } else {
                 localStorage.setItem('jwtToken', token);
                 this.props.history.push('/');
-                window.location.reload();
+                //window.location.reload();
             }
         }
     }
