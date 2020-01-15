@@ -5,6 +5,7 @@ const jwt = require('jsonwebtoken');
 const cors = require('cors');
 const ipInt = require('ip-to-int');
 const ip = require('ip');
+const path = require('path');
 
 /* Configuration import */
 let config;
