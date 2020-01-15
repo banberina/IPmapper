@@ -18,7 +18,6 @@ const CLIENT_URL = process.env.CLIENT_URL  || config.CLIENT_URL;
 
 const db = mongojs(process.env.MONGODB_URL || config.MONGODB_URL);
 
-module.exports = app;
 app.use(bodyParser.json());
 app.use(cors());
 
