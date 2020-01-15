@@ -36,7 +36,7 @@ class ReverseDNS extends Component {
                             <MDBJumbotron style={{ padding: 4 }}>
                                 <h3 className="h1 display-3">IPMapper</h3>
 
-                                <h5>Reverse DNS lookup for an IP address.</h5>
+                                <h5>ASN lookup for an IP address.</h5>
                                 <hr className="my-2" />
                                 <form name="id" onSubmit={this.handleSubmit}>
                                     <input type="text" id="ip" name="ip" onChange={this.handleChange} required />
@@ -49,8 +49,6 @@ class ReverseDNS extends Component {
 
                                     </p>
                                 </form>
-
-
                             </MDBJumbotron>
                         </MDBCol>
                     </MDBRow>

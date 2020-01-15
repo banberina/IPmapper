@@ -45,7 +45,7 @@ class Navbar extends Component {
               </MDBNavItem>
               <MDBNavItem>
                 {hasValidJwt() ? (
-                  <MDBNavLink to="/ipv6lookup"><h6>Ipv6</h6></MDBNavLink>
+                  <MDBNavLink to="/ipv6lookup"><h6>IPv6</h6></MDBNavLink>
                 ) : (null)
                 }
               </MDBNavItem>

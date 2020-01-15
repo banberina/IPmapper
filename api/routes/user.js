@@ -1,7 +1,8 @@
+
 module.exports = (router, db, mongojs, jwt, config, ip) => {
 
     router.use((req, res, next) => {
-        console.log(`User route accessed by: ${ip.address()}`); // log visits
+        console.log(`User route accessed by: ${req.ip}`); // log visits
 
         /* Check for proper JWT */
         let authorization = req.get('Authorization');
@@ -24,10 +25,10 @@ module.exports = (router, db, mongojs, jwt, config, ip) => {
     })
 
     /* Visit-logging middleware */
-    router.use((req, res, next, mongojs, db, config) => {
+     router.use((req, res, next, mongojs, db, config) => {
         console.log(`New visit from ${ip.address()} at ${new Date()}`); // log visits
         next();
-    });
+    }); 
 
      router.get('/asn/:ip',(req, res)  => {
         var ip = req.params.ip;

@@ -4,7 +4,7 @@ const bodyParser = require('body-parser');
 const jwt = require('jsonwebtoken');
 const cors = require('cors');
 const ipInt = require('ip-to-int');
-const ip = require("ip");
+const ip = require('ip');
 
 /* Configuration import */
 let config;
@@ -18,17 +18,17 @@ const CLIENT_URL = process.env.CLIENT_URL  || config.CLIENT_URL;
 
 const db = mongojs(process.env.MONGODB_URL || config.MONGODB_URL);
 
+
 app.use(bodyParser.json());
 app.use(cors());
 
-let admin_router = express.Router();
-require('./routes/admin.js')(admin_router, db, mongojs, jwt, config);
-app.use('/admin', admin_router);
 
+/* Global middleware */
+app.use((req, res, next) => {
+    console.log('Server time: ', Date.now());
+    next();
+});
 
-let user_router = express.Router();
-require('./routes/user.js')(user_router, db, mongojs, jwt, config);
-app.use('/user', user_router);
 
 const { google } = require('googleapis');
 const oauth2Client = new google.auth.OAuth2(
@@ -89,20 +89,6 @@ app.get('/login', (req, res) => {
         res.redirect(url);
     }
 });
-
-
-
-/* Visit-logging middleware */
-/* app.use((req, res, next) => {
-    console.log(`New visit from ${ip.address()} at ${new Date()}`); // log visits
-    next();
-}); */
-
-/* Global middleware */
- app.use((req, res, next) => {
-    console.log('Server time: ', Date.now());
-    next();
-}); 
 
 /* App version endpoint */
 app.get('/version', (req, res) => {
@@ -166,7 +152,16 @@ app.get('/asn/:ip', (req, res) => {
     });
 });
 
-app.use(express.static('./../frontend/build'));
+let admin_router = express.Router();
+require('./routes/admin.js')(admin_router, db, mongojs, jwt, config);
+app.use('/admin', admin_router);
+
+
+let user_router = express.Router();
+require('./routes/user.js')(user_router, db, mongojs, jwt, config);
+app.use('/user', user_router);
+
+app.use('/',express.static('./../frontend/build'));
 app.get('/*',function (req,res) {
     res.sendFile(path.join(__dirname,'./../frontend/build/index.html'), function(err) {
         if (err) {

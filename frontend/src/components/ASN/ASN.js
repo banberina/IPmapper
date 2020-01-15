@@ -10,11 +10,11 @@ import Table from 'react-bootstrap/Table'
 import {getHeaders} from '../../utils/getHeaders'
 import config from '../../config'
 
-class ReverseDNS extends Component {
+class ASN extends Component {
     constructor(props) {
         super(props);
         this.state = {
-          dnsdata: [],
+          asndata: [],
           isLoading: true,
           requestFailed: false
         };
@@ -22,8 +22,6 @@ class ReverseDNS extends Component {
     
       componentDidMount() {
         const { ip } = this.props.match.params;
-        //console.log(ip);
-    
         axios.get(`${config.BASE_URL}/user/asn/${ip}`, { headers: getHeaders() })          
         .then(res => {
             const asndata = res.data;
@@ -33,8 +31,9 @@ class ReverseDNS extends Component {
       }
 
   render() {
-    console.log(this.state.dnsdata);
-    const { dnsdata, isLoading } = this.state;
+    console.log(this.state.asndata);
+    const { asndata, isLoading } = this.state;
+    const { ip } = this.props.match.params;
     while (isLoading)
       return (
         <Fragment>
@@ -47,7 +46,7 @@ class ReverseDNS extends Component {
             <MDBRow>
               <MDBCol>
                 <MDBJumbotron style={{ padding: 4 }}>
-                  <h3 >DNS Data</h3>
+                  <h3 >ASN Data</h3>
                   <Spinner animation="grow" variant="secondary" />
                   <Spinner animation="grow" variant="secondary" />
                   <Spinner animation="grow" variant="secondary" />
@@ -59,7 +58,7 @@ class ReverseDNS extends Component {
           </MDBContainer>
         </Fragment>
       );
-    if (dnsdata.length===0)
+    if (asndata.length===0)
       return (
         <Fragment>
           <CssBaseline />
@@ -74,7 +73,7 @@ class ReverseDNS extends Component {
                   <h1>IP input not valid</h1>
                   <h3>Try with something else.</h3>
                   <br />
-                  <Link to="../reversedns">
+                  <Link to="../asnlookup">
                     <button name="action"><h4 style={{ color: 'white' }}>Return</h4>
                     </button>
                   </Link>
@@ -92,17 +91,21 @@ class ReverseDNS extends Component {
             <Table striped bordered hover variant="dark">
               <thead>
                 <tr>
-                  <td colSpan="2"><h2>Reverse DNS</h2></td>
+                  <td colSpan="2"><h2>ASN Data</h2></td>
                 </tr>
               </thead>
               <tbody>
                 <tr>
                   <td><h5>IP</h5></td>
-                  <td>{dnsdata.data.ip}</td>
+                  <td>{asndata.ip}</td>
                 </tr>
                 <tr>
-                  <td><h5>Hostname</h5></td>
-                  <td>{dnsdata.data.hostname}</td>
+                  <td><h5>ASN</h5></td>
+                  <td>{asndata.asn}</td>
+                </tr>
+                <tr>
+                  <td><h5>Company</h5></td>
+                  <td>{asndata.company}</td>
                 </tr>
               </tbody>
             </Table>
@@ -113,5 +116,5 @@ class ReverseDNS extends Component {
   }
 }
 
-export default withRouter(ReverseDNS); 
+export default withRouter(ASN); 
 

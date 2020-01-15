@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-
 import '../../css/google-button.css';
 import config from '../../config';
 import axios from 'axios';

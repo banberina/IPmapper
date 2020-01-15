@@ -13,7 +13,7 @@ class Proxy extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      ipdata: [],
+      proxydata: [],
       isLoading: true,
       requestFailed: false
     };
@@ -21,20 +21,20 @@ class Proxy extends Component {
 
   componentDidMount() {
     const { ip } = this.props.match.params;
-    //console.log(ip);
-    axios.get(`${config.BASE_URL}/user/proxy/${ip}`)
+    axios.get(`${config.BASE_URL}/proxy/${ip}`)
       .then(res => {
-        const ipdata = res.data;
-        console.log(ipdata);
-        this.setState({ ipdata, isLoading: false})
-      
-      }).catch(error=> {this.setState({isLoading:false})});
+        const proxydata = res.data;
+        console.log(proxydata);
+        this.setState({ proxydata, isLoading: false })
+
+      }).catch(error => { this.setState({ isLoading: false }) });
 
   }
 
   render() {
-    console.log(this.state.ipdata);
-    const { ipdata, isLoading } = this.state;
+    console.log(this.state.proxydata);
+    const { proxydata, isLoading } = this.state;
+    const { ip } = this.props.match.params;
     while (isLoading)
       return (
         <Fragment>
@@ -47,7 +47,7 @@ class Proxy extends Component {
             <MDBRow>
               <MDBCol>
                 <MDBJumbotron style={{ padding: 4 }}>
-                  <h3 >IP Proxy Info:</h3>
+                  <h3 >IP Info:</h3>
                   <Spinner animation="grow" variant="secondary" />
                   <Spinner animation="grow" variant="secondary" />
                   <Spinner animation="grow" variant="secondary" />
@@ -59,7 +59,7 @@ class Proxy extends Component {
           </MDBContainer>
         </Fragment>
       );
-    if (ipdata.length===0)
+    if (proxydata.length === 0)
       return (
         <Fragment>
           <CssBaseline />
@@ -74,7 +74,7 @@ class Proxy extends Component {
                   <h1>IP input not valid</h1>
                   <h3>Try with something else.</h3>
                   <br />
-                  <Link to="../proxy">
+                  <Link to="/proxy">
                     <button name="action"><h4 style={{ color: 'white' }}>Return</h4>
                     </button>
                   </Link>
@@ -98,15 +98,39 @@ class Proxy extends Component {
               <tbody>
                 <tr>
                   <td><h5>IP</h5></td>
-                  <td>{ipdata.ip}</td>
-                </tr>
-                <tr>
-                  <td><h5>Type</h5></td>
-                  <td>{ipdata.type}</td>
+                  <td>{ip}</td>
                 </tr>
                 <tr>
                   <td><h5>Proxy Type</h5></td>
-                  <td>{ipdata.proxy_type}</td>
+                  <td>{proxydata.proxytype}</td>
+                </tr>
+                <tr>
+                  <td><h5>ISP</h5></td>
+                  <td>{proxydata.isp}</td>
+                </tr>
+                <tr>
+                    <td><h5>Domain</h5></td>
+                    <td>{proxydata.domain}</td>
+                 </tr>
+                  <tr>
+                    <td><h5>Usage Type</h5></td>
+                    <td>{proxydata.usagetype}</td>
+                  </tr>
+                  <tr>
+                  <td><h5>Country</h5></td>
+                  <td>{proxydata.country}</td>
+                </tr>
+                <tr>
+                  <td><h5>Country short</h5></td>
+                  <td>{proxydata.country_short}</td>
+                </tr>
+                <tr>
+                  <td><h5>Region</h5></td>
+                  <td>{proxydata.region}</td>
+                </tr>
+                <tr>
+                  <td><h5>City</h5></td>
+                  <td>{proxydata.city}</td>
                 </tr>
               </tbody>
             </Table>
@@ -117,5 +141,6 @@ class Proxy extends Component {
   }
 }
 
-export default withRouter(Proxy); 
+
+export default withRouter(Proxy);
 

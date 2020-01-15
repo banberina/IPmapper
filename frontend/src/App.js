@@ -7,6 +7,8 @@ import ASNInput from './components/ASN/ASNInput'
 import AdminPage from './components/Admin/AdminPage'
 import ProxyInfo from './components/Proxy/Proxy'
 import ProxyInput from './components/Proxy/ProxyInput'
+import IPv6 from './components/IPv6/IPv6'
+import IPv6Input from './components/IPv6/IPv6Input'
 import ParticlesBg from 'particles-bg'
 import NotFound from './components/404/NotFound'
 import Particles from 'react-particles-js'
@@ -44,6 +46,8 @@ class App extends Component {
             <Route path='/proxy/' component={ProxyInput} />
             <UserRoute path='/asnlookup/:ip' component={ASN} />
             <UserRoute path='/asnlookup' component={ASNInput} />
+            <UserRoute path='/ipv6lookup/:ip' component={IPv6} />
+            <UserRoute path='/ipv6lookup' component={IPv6Input} />
             <AdminRoute path='/admin' component={AdminPage} />
             <Route path="*" component={NotFound} />
           </Switch>

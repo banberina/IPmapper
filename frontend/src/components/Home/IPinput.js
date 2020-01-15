@@ -21,6 +21,7 @@ class IPinput extends Component {
         console.log(this.state);
 
     }
+    
     render() {
         return (
 
