@@ -7,6 +7,7 @@ import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
 import Spinner from 'react-bootstrap/Spinner'
 import Table from 'react-bootstrap/Table'
+import config from '../../config'
 
 class Lookup extends Component {
   constructor(props) {
@@ -20,11 +21,8 @@ class Lookup extends Component {
 
   componentDidMount() {
     const { ip } = this.props.match.params;
-    let lookupURl;
-    lookupURl = `https://ipmapper.herokuapp.com/geo/${ip}`;
 
-    axios.get(lookupURl)
-      .then(res => {
+    axios.get(`${config.BASE_URL}/geo/${ip}`).then(res => {
         const ipdata = res.data;
         console.log(ipdata);
         this.setState({ ipdata, isLoading: false})

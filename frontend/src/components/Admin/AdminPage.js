@@ -8,7 +8,7 @@ import Container from '@material-ui/core/Container';
 import Spinner from 'react-bootstrap/Spinner'
 import Table from 'react-bootstrap/Table'
 
-class Details extends Component {
+class AdminPage extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -165,4 +165,4 @@ class Details extends Component {
   }
 }
 
-export default withRouter(Details); 
+export default withRouter(AdminPage); 

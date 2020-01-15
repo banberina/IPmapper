@@ -7,6 +7,7 @@ import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
 import Spinner from 'react-bootstrap/Spinner'
 import Table from 'react-bootstrap/Table'
+import config from '../../config'
 
 class CurrentIP extends Component {
   constructor(props) {
@@ -19,13 +20,9 @@ class CurrentIP extends Component {
   }
 
   componentDidMount() {
-    let lookupURl;
-    //lookupURl = `https://ip2geo-api.tribeos.io/lookup`;
-
-    axios.get(lookupURl)
+    axios.get(`${config.BASE_URL}/current`)
       .then(res => {
         const ipdata = res.data.data[0];
-        //console.log(ipdata);
         this.setState({ ipdata, isLoading: false})
       });
 

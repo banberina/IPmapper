@@ -34,13 +34,9 @@ class Navbar extends Component {
               <MDBNavItem>
                 <MDBNavLink to={'/lookup'}><h6>Current IP Lookup</h6></MDBNavLink>
               </MDBNavItem>
-              {hasValidJwt() && isAdmin() ?
-                (<MDBNavItem>
-                <MDBNavLink to="/details"><h6>Details</h6></MDBNavLink>
+              <MDBNavItem>
+                <MDBNavLink to="/proxy"><h6>Proxy Data</h6></MDBNavLink>
               </MDBNavItem>
-              ): (null)
-              }
-              
               <MDBNavItem>
                 {hasValidJwt() ? (
                   <MDBNavLink to="/asnlookup"><h6>ASN</h6></MDBNavLink>
@@ -48,12 +44,22 @@ class Navbar extends Component {
                 }
               </MDBNavItem>
               <MDBNavItem>
-                <MDBNavLink to="/proxy"><h6>Proxy Data</h6></MDBNavLink>
+                {hasValidJwt() ? (
+                  <MDBNavLink to="/ipv6lookup"><h6>Ipv6</h6></MDBNavLink>
+                ) : (null)
+                }
               </MDBNavItem>
+              
+              {hasValidJwt() && isAdmin() ?
+                (<MDBNavItem>
+                  <MDBNavLink to="/admin"><h6>Admin page</h6></MDBNavLink>
+                </MDBNavItem>
+                ) : (null)
+              }
             </MDBNavbarNav>
             <MDBNavItem right >
               {hasValidJwt() ? (
-                <SignOutButton/>
+                <SignOutButton />
               ) : (
                   <GoogleSignInButton />
                 )}

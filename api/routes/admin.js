@@ -116,14 +116,7 @@ module.exports = (router, db, mongojs, jwt, config,ip) => {
             res.status(200);
         });
     }); 
-
-    router.post('/user',(req,res)=> { 
-        db.users.insert(req.body,(error,docs)=>
-        {
-            res.json(docs);
-            res.status(200);
-        });
-    });  
+ 
 
     /* UPDATE operations */
 

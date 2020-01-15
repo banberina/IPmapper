@@ -4,7 +4,7 @@ import Navbar from './components/Navbar/Navbar'
 import Lookup from './components/Lookup/Lookup'
 import ASN from './components/ASN/ASN'
 import ASNInput from './components/ASN/ASNInput'
-import Details from './components/Details/Details'
+import AdminPage from './components/Admin/AdminPage'
 import ProxyInfo from './components/Proxy/Proxy'
 import ProxyInput from './components/Proxy/ProxyInput'
 import ParticlesBg from 'particles-bg'
@@ -44,7 +44,7 @@ class App extends Component {
             <Route path='/proxy/' component={ProxyInput} />
             <UserRoute path='/asnlookup/:ip' component={ASN} />
             <UserRoute path='/asnlookup' component={ASNInput} />
-            <AdminRoute path='/details' component={Details} />
+            <AdminRoute path='/admin' component={AdminPage} />
             <Route path="*" component={NotFound} />
           </Switch>
         </BrowserRouter>

@@ -15,7 +15,7 @@ class LogOutButton extends Component {
 
     render() {
         return (
-            <Button onClick={this.logOut} style={{ marginLeft: 10 }}><h4>Sign out</h4></Button>
+            <Button onClick={this.logOut} style={{ marginLeft: 10 }} variant='default'><h4>Sign out</h4></Button>
         )
     }
 }

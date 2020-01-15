@@ -42,4 +42,16 @@ module.exports = (router, db, mongojs, jwt, config, ip) => {
         }); 
     }); 
 
+    router.get('/geoipv6/:ip',(req, res)  => {
+        var ip = req.params.ip;
+        var ipint=ipInt(ip).toInt();
+        console.log(ipint);
+        db.geoipv6.findOne({$and:[{ipfrom:{$lte:ipint}},{ipto:{$gte:ipint}}]}, (error, docs) => {
+            if (error) {
+                throw error;
+            }
+            res.json(docs);
+            res.status(200);
+        }); 
+    }); 
 }
