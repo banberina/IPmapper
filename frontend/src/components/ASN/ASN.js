@@ -7,6 +7,8 @@ import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
 import Spinner from 'react-bootstrap/Spinner'
 import Table from 'react-bootstrap/Table'
+import {getHeaders} from '../../utils/getHeaders'
+import config from '../../config'
 
 class ReverseDNS extends Component {
     constructor(props) {
@@ -21,14 +23,12 @@ class ReverseDNS extends Component {
       componentDidMount() {
         const { ip } = this.props.match.params;
         //console.log(ip);
-        let lookupURl;
-        //lookupURl = `https://ip2geo-api.tribeos.io/reversedns/${ip}`;
     
-        axios.get(lookupURl, { headers: { Authorization: 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE1NjM5NTIxOTUsImRhdGEiOnsidXNlcl9pZCI6IjVjZTNjMjM1ZjA4NGQ1MDAxMzVhMGUwMyIsImFjY291bnRfaWQiOiI1Y2UzYzIzNWYwODRkNTAwMTM1YTBlMDIiLCJuYW1lIjoiQWRuYW4gTWlsamtvdmnEhyIsImlzX21hc3Rlcl9wYXNzd29yZCI6dHJ1ZX0sInNjb3BlcyI6eyJ0cmliZW9zX2FkdiI6IjVjZTNjMjQ2ODE1MjJlMDAxNjAxYWFkMiIsInRyaWJlb3NfcHViIjoiNWQwYTA1OTI2NmY3ZDIwMDEzN2U5NjRjIn19.NrsrOoaJNw1rAUAlbLx8EdUGd_TI6iJFi9PrW953hao' } })
-          .then(res => {
-            const dnsdata = res.data;
-            console.log(dnsdata);
-            this.setState({ dnsdata, isLoading: false})
+        axios.get(`${config.BASE_URL}/user/asn/${ip}`, { headers: getHeaders() })          
+        .then(res => {
+            const asndata = res.data;
+            console.log(asndata);
+            this.setState({ asndata, isLoading: false})
               }).catch(error=> {this.setState({isLoading:false})});
       }
 

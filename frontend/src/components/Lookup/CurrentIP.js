@@ -8,6 +8,7 @@ import Container from '@material-ui/core/Container';
 import Spinner from 'react-bootstrap/Spinner'
 import Table from 'react-bootstrap/Table'
 import config from '../../config'
+const ip = require("ip");
 
 class CurrentIP extends Component {
   constructor(props) {
@@ -20,11 +21,13 @@ class CurrentIP extends Component {
   }
 
   componentDidMount() {
-    axios.get(`${config.BASE_URL}/current`)
-      .then(res => {
-        const ipdata = res.data.data[0];
+
+    axios.get(`${config.BASE_URL}/current`).then(res => {
+        const ipdata = res.data;
+        console.log(ipdata);
         this.setState({ ipdata, isLoading: false})
-      });
+      
+      }).catch(error=> {this.setState({isLoading:false})});
 
   }
 
@@ -69,31 +72,19 @@ class CurrentIP extends Component {
               <tbody>
                 <tr>
                   <td><h5>IP</h5></td>
-                  <td>{ipdata.ip}</td>
-                </tr>
-                <tr>
-                  <td><h5>Type</h5></td>
-                  <td>{ipdata.type}</td>
+                  <td>{ip}</td>
                 </tr>
                 <tr>
                   <td><h5>Country</h5></td>
                   <td>{ipdata.country}</td>
                 </tr>
                 <tr>
-                  <td><h5>Country code 2</h5></td>
-                  <td>{ipdata.country_code_2}</td>
-                </tr>
-                <tr>
-                  <td><h5>Country code 3</h5></td>
-                  <td>{ipdata.country_code_3}</td>
+                  <td><h5>Country short</h5></td>
+                  <td>{ipdata.country_short}</td>
                 </tr>
                 <tr>
                   <td><h5>Region</h5></td>
                   <td>{ipdata.region}</td>
-                </tr>
-                <tr>
-                  <td><h5>Region code 2</h5></td>
-                  <td>{ipdata.region_code}</td>
                 </tr>
                 <tr>
                   <td><h5>City</h5></td>
@@ -105,19 +96,11 @@ class CurrentIP extends Component {
                 </tr>
                 <tr>
                   <td><h5>Longitude</h5></td>
-                  <td>{ipdata.lng}</td>
+                  <td>{ipdata.lon}</td>
                 </tr>
                 <tr>
                   <td><h5>Zip code</h5></td>
-                  <td>{ipdata.zip_code}</td>
-                </tr>
-                <tr>
-                  <td><h5>ISP</h5></td>
-                  <td>{ipdata.isp}</td>
-                </tr>
-                <tr>
-                  <td><h5>Domain</h5></td>
-                  <td>{ipdata.domain}</td>
+                  <td>{ipdata.zipcode}</td>
                 </tr>
               </tbody>
             </Table>
