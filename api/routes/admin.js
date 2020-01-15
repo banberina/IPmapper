@@ -1,4 +1,4 @@
-module.exports = (router, db, mongojs, jwt, config, ip) => {
+module.exports = (router, db, mongojs, jwt, config) => {
 
     router.use((req, res, next) => {
 
@@ -10,7 +10,7 @@ module.exports = (router, db, mongojs, jwt, config, ip) => {
                 if (error) {
                     res.status(401).send({ message: 'Unauthorized access: ' + error.message });
                 } else {
-                    let userType = decoded.type;
+                    let userType = decoded.role;
                     if (userType === 'admin') {
                         next();
                     } else {

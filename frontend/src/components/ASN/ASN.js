@@ -7,8 +7,8 @@ import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
 import Spinner from 'react-bootstrap/Spinner'
 import Table from 'react-bootstrap/Table'
-import {getHeaders} from '../../utils/getHeaders'
-import config from '../../config'
+import config from './../../config'
+import {getHeaders} from './../../utils/getHeaders'
 
 class ASN extends Component {
     constructor(props) {
@@ -22,7 +22,7 @@ class ASN extends Component {
     
       componentDidMount() {
         const { ip } = this.props.match.params;
-        axios.get(`${config.BASE_URL}/user/asn/${ip}`, { headers: getHeaders() })          
+        axios.get(`${config.BASE_URL}/user/asn/${ip}`, { headers: getHeaders()})         
         .then(res => {
             const asndata = res.data;
             console.log(asndata);
@@ -97,7 +97,7 @@ class ASN extends Component {
               <tbody>
                 <tr>
                   <td><h5>IP</h5></td>
-                  <td>{asndata.ip}</td>
+                  <td>{ip}</td>
                 </tr>
                 <tr>
                   <td><h5>ASN</h5></td>

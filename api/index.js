@@ -159,7 +159,7 @@ app.use('/admin', admin_router);
 
 
 let user_router = express.Router();
-require('./routes/user.js')(user_router, db, mongojs, jwt, config);
+require('./routes/user.js')(user_router, db, mongojs, jwt, config,ip,ipInt);
 app.use('/user', user_router);
 
 app.use('/',express.static('./../frontend/build'));

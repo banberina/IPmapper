@@ -1,5 +1,5 @@
 
-module.exports = (router, db, mongojs, jwt, config, ip) => {
+module.exports = (router, db, mongojs, jwt, config, ip,ipInt) => {
 
     router.use((req, res, next) => {
         console.log(`User route accessed by: ${req.ip}`); // log visits
@@ -11,7 +11,7 @@ module.exports = (router, db, mongojs, jwt, config, ip) => {
                 if (error) {
                     res.status(401).send({ message: 'Unauthorized access: ' + error.message });
                 } else {
-                    let userType = decoded.type;
+                    let userType = decoded.role;
                     if (userType === 'user' || userType === 'admin') {
                         next();
                     } else {
