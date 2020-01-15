@@ -19,7 +19,7 @@ export default {
       headers: getHeaders()
     }),
 
-  deleteASN: (email) =>
+  deleteASN: (id) =>
     axios.delete(`${config.BASE_URL}/admin/asn/${id}`, {
       headers: getHeaders()
     }),
