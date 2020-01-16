@@ -34,7 +34,7 @@ class ProxyInput extends Component {
                     <MDBRow>
                         <MDBCol>
                             <MDBJumbotron style={{  padding: 4 }}>
-                                <h3 className="h1 display-3">IPMapper</h3>
+                                <h3 className="h1 display-3">Proxy</h3>
                                 
                                     <h5>Get proxy data about an IP address</h5>
                                 <hr className="my-2" />

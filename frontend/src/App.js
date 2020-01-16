@@ -17,6 +17,7 @@ import CurrentIP from './components/Lookup/CurrentIP'
 import { hasValidJwt } from './utils/jwtValidator';
 import { isAdmin } from './utils/isAdmin'
 import Auth from './components/Authorization/Auth'
+import Users from './components/Users/Users'
 
 /* Private routes - if the user is authenticated, render component; otherwise redirect to home page */
 const UserRoute = ({ component: Component, ...rest }) => (
@@ -41,7 +42,7 @@ class App extends Component {
             <Route exact path='/' component={IPinput} />
             <Route exact path='/auth' component={Auth} />
             <Route path='/lookup/:ip' component={Lookup} />
-            <Route path='/lookup' component={CurrentIP} />
+            <Route path='/current' component={CurrentIP} />
             <Route path='/proxy/:ip' component={ProxyInfo} />
             <Route path='/proxy/' component={ProxyInput} />
             <UserRoute path='/asnlookup/:ip' component={ASN} />
@@ -49,6 +50,7 @@ class App extends Component {
             <UserRoute path='/ipv6lookup/:ip' component={IPv6} />
             <UserRoute path='/ipv6lookup' component={IPv6Input} />
             <AdminRoute path='/admin' component={AdminPage} />
+            <AdminRoute path='/users' component={Users} />
             <Route path="*" component={NotFound} />
           </Switch>
         </BrowserRouter>

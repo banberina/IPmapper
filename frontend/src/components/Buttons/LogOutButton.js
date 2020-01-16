@@ -1,5 +1,7 @@
 import React, { Component } from 'react'
 import { Button } from 'react-bootstrap';
+import '../../css/google-button.css';
+
 
 class LogOutButton extends Component {
     constructor(props) {
@@ -15,7 +17,9 @@ class LogOutButton extends Component {
 
     render() {
         return (
+            <div  >
             <Button onClick={this.logOut} style={{ marginLeft: 10 }} variant='default'><h4>Sign out</h4></Button>
+            </div>
         )
     }
 }

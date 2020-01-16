@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from 'react'
-import { withRouter } from 'react-router-dom';
+import { Link,withRouter } from 'react-router-dom';
 import axios from 'axios'
 import { MDBContainer, MDBJumbotron, MDBRow, MDBCol } from 'mdbreact'
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -23,18 +23,19 @@ class CurrentIP extends Component {
   componentDidMount() {
 
     axios.get(`${config.BASE_URL}/current`).then(res => {
-        const ipdata = res.data;
-        console.log(ipdata);
-        this.setState({ ipdata, isLoading: false})
-      
-      }).catch(error=> {this.setState({isLoading:false})});
+      const ipdata = res.data;
+      console.log(ipdata);
+      this.setState({ isLoading: false })
+
+    }).catch(error => { this.setState({ isLoading: false }) });
 
   }
 
   render() {
     console.log(this.state.ipdata);
     const { ipdata, isLoading } = this.state;
-    if (isLoading)
+    const { ip } = this.props.match.params;
+    while (isLoading)
       return (
         <Fragment>
           <CssBaseline />
@@ -58,6 +59,31 @@ class CurrentIP extends Component {
           </MDBContainer>
         </Fragment>
       );
+    if (ipdata.length === 0)
+      return (
+        <Fragment>
+          <CssBaseline />
+          <Container>
+            <Typography component="div" style={{ backgroundColor: 'transparent', height: '10vh' }} />
+          </Container>
+          <CssBaseline />
+          <MDBContainer className="mt-5 text-center">
+            <MDBRow>
+              <MDBCol>
+                <MDBJumbotron style={{ padding: 4 }}>
+                  <h1>IP input not valid</h1>
+                  <h3>Try with something else.</h3>
+                  <br />
+                  <Link to="/">
+                    <button name="action"><h4 style={{ color: 'white' }}>Return</h4>
+                    </button>
+                  </Link>
+                </MDBJumbotron>
+              </MDBCol>
+            </MDBRow>
+          </MDBContainer>
+
+        </Fragment>)
     else {
       return (
         <Fragment>
@@ -111,5 +137,5 @@ class CurrentIP extends Component {
   }
 }
 
-export default withRouter(CurrentIP); 
+export default withRouter(CurrentIP);
 

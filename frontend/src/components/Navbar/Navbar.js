@@ -32,7 +32,7 @@ class Navbar extends Component {
           <MDBCollapse isOpen={this.state.collapse} navbar>
             <MDBNavbarNav left>
               <MDBNavItem>
-                <MDBNavLink to={'/lookup'}><h6>Current IP Lookup</h6></MDBNavLink>
+                <MDBNavLink to={'/current'}><h6>Current IP Lookup</h6></MDBNavLink>
               </MDBNavItem>
               <MDBNavItem>
                 <MDBNavLink to="/proxy"><h6>Proxy Data</h6></MDBNavLink>
@@ -53,6 +53,12 @@ class Navbar extends Component {
               {hasValidJwt() && isAdmin() ?
                 (<MDBNavItem>
                   <MDBNavLink to="/admin"><h6>Admin page</h6></MDBNavLink>
+                </MDBNavItem>
+                ) : (null)
+              }
+              {hasValidJwt() && isAdmin() ?
+                (<MDBNavItem>
+                  <MDBNavLink to="/users"><h6>Users</h6></MDBNavLink>
                 </MDBNavItem>
                 ) : (null)
               }
