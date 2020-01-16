@@ -38,7 +38,7 @@ class ReverseDNS extends Component {
 
                                 <h5>ASN Lookup</h5>
                                 <hr className="my-2" />
-                                <form name="id" onSubmit={this.handleSubmit}>
+                                <form name="ip" onSubmit={this.handleSubmit}>
                                     <input type="text" id="ip" name="ip" onChange={this.handleChange} required />
                                     <br />
                                     <br />
