@@ -120,7 +120,9 @@ module.exports = (router, db, mongojs, jwt, config) => {
     router.put('/asn/:id', (req, res) => {
         let id = req.params.id;
         let itemUpdate = req.body;
+        console.log(itemUpdate);
         db.asn.updateOne({ _id: mongojs.ObjectId(id) }, { $set: itemUpdate }, (error, docs) => {
+            console.log(error);
             res.json(docs);
             res.status(200);
         });
